@@ -58,7 +58,8 @@
     "grunt-nodemon": "0.2.0",
     "load-grunt-tasks": "^0.4.0",
     "xmldom": "^0.1.19",
-    "xpath.js": "^0.0.3"
+    "xpath.js": "^0.0.3",
+    "restler": "^3.2.2"
   },
   "devDependencies": {
     "assetmanager": "^0.1.1",

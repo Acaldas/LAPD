@@ -2,13 +2,12 @@
  
 angular.module('mean.movies').factory('Movies', ['$resource',
   function($resource) {
-      return $resource(
-        "/getMovie/:id",
-        {id: "@id" }
-//        ,{
-//            "update": {method: "PUT"},
-//            "reviews": {'method': 'GET', 'params': {'reviews_only': "true"}, isArray: true}
-// 
-//        }
-    );
+  	 return {
+      getMovies: $resource('/getMovie/:id', {id: '@id' }, {
+        query: { method: 'GET', params: {}, isArray: true }
+      }),
+      update: $resource('/updateMovies', {}, {
+        query: { method: 'POST', params: {}, isArray: false }
+      })
+    };
 }]);

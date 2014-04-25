@@ -1,18 +1,10 @@
 'use strict';
 
+var rest = require('restler'); //https://github.com/danwrong/restler
+
 
 exports.getMovie = function(req, res) {
-//  var movie = req.body;
-    res.jsonp(1);
-//  res.jsonp(movie);
-//  bucketList.save(function(err) {
-//    if (err) {
-//      console.log(err);
-//    } else {
-//      res.jsonp(bucketList);
-//    }
-//  }
-//    );
+    res.send(req.params.id);
 };
 
 exports.getMovies = function(req, res) {
@@ -22,3 +14,13 @@ exports.getMovies = function(req, res) {
     
     res.jsonp(movies);
 };
+
+
+exports.updateMovies = function(req, res) {
+	
+	rest.get('http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=sqef2dd4hmsbfmh29b5bu7rf&?callback=JSON_CALLBACK')
+	.on('complete', function(data) {
+  		res.send(data); // auto convert to object
+	});
+
+}

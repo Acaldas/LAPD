@@ -5,10 +5,13 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     $scope.global = Global;
       
       // Get all movies
-      $scope.movies = Movies.query();
+      $scope.movies = Movies.getMovies.query();
  
       // Get movie with id 1
-      $scope.test = Movies.get({},{'id': 1});      
+      $scope.test = Movies.getMovies.get({},{'id': 1});      
       //http://www.masnun.com/2013/08/28/rest-access-in-angularjs-using-ngresource.html
+
+      $scope.update = Movies.update.query();
+      $scope.movies = $scope.update.movies;
   }
 ]);
