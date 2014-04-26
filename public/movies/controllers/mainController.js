@@ -12,6 +12,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
       //http://www.masnun.com/2013/08/28/rest-access-in-angularjs-using-ngresource.html
 
       $scope.update = Movies.update.query();
+      console.log($scope.update);
       $scope.movies = $scope.update.movies;
   }
 ]);
