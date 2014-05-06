@@ -3,16 +3,10 @@
         <input class="search" ng-model="searchTitle" name="Movie" placeholder="Search movie"/>
         <hr>
         <div class="movies center-block">
-            <div ng-repeat="movie in update.movies | filter:{title: searchTitle}" class="movie"  ng-click="setMovie(movie.links.self)">
+            <div ng-repeat="movie in movies | filter:{title: searchTitle}" class="movie"  ng-click="setMovie(movie.links.self)">
                 <h4>{{movie.title}}</h4>
-                <img src="{{movie.posters.detailed}}" width="215" height="320" alt="{{movie.title}}">
+                <img ng-src="{{movie.poster}}" width="215" height="320" alt="{{movie.title}}">
             </div>
-            
-        <div>
-            {{texto}}
-            <h1>EXaIST:</h1>
-            {{}}    
-        </div>
         </div>    
         
     </div>

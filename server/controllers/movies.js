@@ -1,103 +1,135 @@
-'use strict';
+	'use strict';
 
-var rest = require('restler'); //https://github.com/danwrong/restler
-var fs = require('fs');
-var DOMParser = require('xmldom').DOMParser;
-var js2xmlparser = require("js2xmlparser");
-var apiKey = 'sqef2dd4hmsbfmh29b5bu7rf';
-exports.getMovie = function(req, res) {
-    res.send(req.params.id);
-};
+	var fs = require('fs');
+	var DOMParser = require('xmldom').DOMParser;
+	var js2xmlparser = require("js2xmlparser");
+	var xml2jsparser = require('xml2js');
+	var apiKey = 'sqef2dd4hmsbfmh29b5bu7rf';
+	var existUsername = "admin";
+	var existPassword = "qweasd";
+	var request = require('request'); //https://github.com/mikeal/request
 
-exports.getMovies = function(req, res) {
-    var movies = new Array();
-    movies[0] = "a";
-    movies[1] = "b";
-    
-    res.jsonp(movies);
-};
+	exports.getMovie = function(req, res) {
+		res.send(req.params.id);
+	};
 
+	exports.getMovies = function(req, res) {
+		request.get('http://localhost:8080/exist/rest/db/apps/movies/getMovies.xq', function (error, response, body) {
+								if(response.statusCode == 200){
 
-exports.updateMovies = function(req, res) {
-	movies_links = [];
-	rest.get('http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=' + apiKey + '&?callback=JSON_CALLBACK&country=pt&page_limit=2')
-	.on('complete', function(data) {
-		var response = JSON.parse(data); //remove \n from rottentomatoes API response
+									xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+										 if (err) { 
+										    console.log(err);
+										  } else {
+										    res.send(result.movies);
+										  }
+									});																			
+									} else {
+										console.log('error: '+ response.statusCode);
+										console.log(body);
+									}
+		}).auth(existUsername, existPassword, true);
 
-
-		response.movies.forEach(function(movie) {
-			movies_links.push(movie.links.self);
-
-		 });
-		movies_links.push('http://api.rottentomatoes.com/api/public/v1.0/movies/770671912.json'); //add Toy Story 3 (testar similar)
-
-		getMovieSet(0,null);
 		
-  		res.send(response.movies); // auto convert to object
-	});
+	};
 
-};
+
+	exports.updateMovies = function(req, res) {
+		movies_links = [];
+		request.get('http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=' + apiKey + '&?callback=JSON_CALLBACK&country=pt&page_limit=2',
+			function (error, response, body) {
+
+	        var response = JSON.parse(body); //remove \n from rottentomatoes API response
+	        response.movies.forEach(function(movie) {
+	        	movies_links.push(movie.links.self);
+
+	        });
+			movies_links.push('http://api.rottentomatoes.com/api/public/v1.0/movies/770671912.json'); //add Toy Story 3 (testar similar)
+
+			getMovieSet(0,null);
+			
+	  		res.send(response.movies); // auto convert to object
+	  	});
+
+	};
+
 	var movies_links = [];
 	var movies_set = [];
 
- function getMovieSet(n, movie) {
+	function getMovieSet(n, movie) {
 
- 	if(movie != null) {
- 			movies_set.push(movie);
- 			n += 1;
- 	}
- 	if(n < movies_links.length ) {
- 		getMovieInfo(n);	
+		if(movie != null) {
+			movies_set.push(movie);
+			n += 1;
+		}
+		if(n < movies_links.length ) {
+			getMovieInfo(n);	
 
- 	} else { //já tem todos os filmes
-		//r doc = new DOMParser().parseFromString(response); //parse json to XML
+	 	} else { //já tem todos os filmes
+			//r doc = new DOMParser().parseFromString(response); //parse json to XML
 
-		var xml_options = {
-		    wrapArray: {
-		        enabled: true,
-		        elementName: 'movie'
-		    }
-		};
+			var xml_options = {
+				wrapArray: {
+					enabled: true,
+					elementName: 'movie'
+				}
+			};
 
-		var movies_xml = js2xmlparser("movies", JSON.stringify(movies_set), xml_options);
+			var movies_xml = js2xmlparser("movies", JSON.stringify(movies_set), xml_options);
+			
+			fs.writeFile("./server/assets/movies/movies.xml",movies_xml, function(err) {
+				if(err) {
+					console.log(err);
+					return;
+				}
 
-		fs.writeFile("./server/assets/movies/movie2.xml", movies_xml, function(err) {
-	    if(err) {
-	        console.log(err);
-	    } else {
-	        console.log("The file was saved!");
-	    }
-	}); 
- 		
- 		movies_links = []; //limpar
- 		movies_set = [];
- 	}
- };
+				//envial movies.xml para exist-db
+				fs.createReadStream("./server/assets/movies/movies.xml").pipe(request.put('http://localhost:8080/exist/rest/apps/movies/movies.xml', 
+					function (error, response, body) {
+						if(response.statusCode == 201){
+							console.log('Movies stored.');
 
- function getMovieInfo(n) {
-	    rest.get(movies_links[n] + '?apikey=' + apiKey).on('complete', function(data) {
-	 		var movie = JSON.parse(data);
-	 		//console.log("Filme " + n);
-	 		getSimilarMovies(n, movie);
+							//transform movies with xslt
+							request.get('http://localhost:8080/exist/rest/db/apps/movies/transformMovies.xml', function (error, response, body) {
+								if(response.statusCode == 200){
+										console.log('Movies transformed.');
+									} else {
+										console.log('error: '+ response.statusCode);
+										console.log(body);
+									}
+							}).auth(existUsername, existPassword, true);
+			} else {
+						console.log('error: '+ response.statusCode);
+						console.log(body);
+					}
+					}).auth(existUsername, existPassword, true));
 
-	 		//TODO adicionar outras infos, como trailers
-	});
- };
+	 		movies_links = []; //limpar
+	 		movies_set = [];
+	 	});
+	 }
+	};
 
-  function getSimilarMovies(n, movie) {
-	    rest.get(movie.links.similar + '?apikey=' + apiKey).on('complete', function(data) {
-	 		var similar_movies = JSON.parse(data);
+	 function getMovieInfo(n) {
+	 	request.get(movies_links[n] + '?apikey=' + apiKey, function (error, response, body) {
+	 			var movie = JSON.parse(body);
+		 		getSimilarMovies(n, movie);
+		 		//TODO adicionar outras infos, como trailers,etc
+		 	});
+	 };
+
+	 function getSimilarMovies(n, movie) {
+	 	request.get(movie.links.similar + '?apikey=' + apiKey, function (error, response, body) {
+	 		var similar_movies = JSON.parse(body);
 	 		var similar = [];
-	 		console.log(similar_movies);
-	 		similar_movies.movies.forEach(function(similar_movie) {
-	 			similar.push({
-	 				id: similar_movie.id,
-	 				title: similar_movie.title,
-	 				link: similar_movie.posters.detailed
-	 			})
-	 		});
-	 		movie.similar = similar;
-	 		//console.log("Filme " + n);
-			getMovieSet(n,movie);		
-	});
- };
+		 		similar_movies.movies.forEach(function(similar_movie) {
+		 			similar.push({
+		 				id: similar_movie.id,
+		 				title: similar_movie.title,
+		 				link: similar_movie.posters.detailed
+		 			})
+		 		});
+		 		movie.similar = similar;
+		 		getMovieSet(n,movie);		
+		 	});
+	 };

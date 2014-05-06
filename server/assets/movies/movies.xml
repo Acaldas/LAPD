@@ -1,88 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <movies>
 	<movie>
-		<id>771312513</id>
-		<title>Captain America: The Winter Soldier</title>
+		<id>771249926</id>
+		<title>The Amazing Spider-Man 2</title>
 		<year>2014</year>
 		<genres>
+			<movie>Drama</movie>
 			<movie>Action &amp; Adventure</movie>
 			<movie>Science Fiction &amp; Fantasy</movie>
 		</genres>
 		<mpaa_rating>PG-13</mpaa_rating>
-		<runtime>136</runtime>
-		<critics_consensus>Suspenseful and politically astute, Captain America: The Winter Soldier is a superior entry in the Avengers canon and is sure to thrill Marvel diehards.</critics_consensus>
+		<runtime>142</runtime>
+		<critics_consensus>While the cast is outstanding and the special effects are top-notch, the latest installment of the Spidey saga suffers from an unfocused narrative and an overabundance of characters.</critics_consensus>
 		<release_dates>
-			<theater>2014-04-04</theater>
+			<theater>2014-05-02</theater>
 		</release_dates>
 		<ratings>
-			<critics_rating>Certified Fresh</critics_rating>
-			<critics_score>89</critics_score>
+			<critics_rating>Rotten</critics_rating>
+			<critics_score>55</critics_score>
 			<audience_rating>Upright</audience_rating>
-			<audience_score>94</audience_score>
+			<audience_score>75</audience_score>
 		</ratings>
-		<synopsis>After being deemed unfit for military service, Steve Rogers volunteers for a top secret research project that turns him into Captain America, a superhero dedicated to defending America&apos;s ideals.</synopsis>
+		<synopsis>We&apos;ve always known that Spider-Man&apos;s most important battle has been within himself: the struggle between the ordinary obligations of Peter Parker and the extraordinary responsibilities of Spider-Man. But in The Amazing Spider-Man 2, Peter Parker finds that a greater conflict lies ahead. It&apos;s great to be Spider-Man (Andrew Garfield). For Peter Parker, there&apos;s no feeling quite like swinging between skyscrapers, embracing being the hero, and spending time with Gwen (Emma Stone). But being Spider-Man comes at a price: only Spider-Man can protect his fellow New Yorkers from the formidable villains that threaten the city. With the emergence of Electro (Jamie Foxx), Peter must confront a foe far more powerful than he. And as his old friend, Harry Osborn (Dane DeHaan), returns, Peter comes to realize that all of his enemies have one thing in common: OsCorp. (c) Columbia</synopsis>
 		<posters>
-			<thumbnail>http://content8.flixster.com/movie/11/17/72/11177246_mob.jpg</thumbnail>
-			<profile>http://content8.flixster.com/movie/11/17/72/11177246_pro.jpg</profile>
-			<detailed>http://content8.flixster.com/movie/11/17/72/11177246_det.jpg</detailed>
-			<original>http://content8.flixster.com/movie/11/17/72/11177246_ori.jpg</original>
+			<thumbnail>http://content8.flixster.com/movie/11/17/72/11177270_mob.jpg</thumbnail>
+			<profile>http://content8.flixster.com/movie/11/17/72/11177270_pro.jpg</profile>
+			<detailed>http://content8.flixster.com/movie/11/17/72/11177270_det.jpg</detailed>
+			<original>http://content8.flixster.com/movie/11/17/72/11177270_ori.jpg</original>
 		</posters>
 		<abridged_cast>
 			<movie>
-				<name>Chris Evans</name>
-				<id>162652784</id>
+				<name>Andrew Garfield</name>
+				<id>770779702</id>
 				<characters>
-					<movie>Captain America/Steve Rogers</movie>
+					<movie>Peter Parker/Spider-Man</movie>
 				</characters>
 			</movie>
 			<movie>
-				<name>Anthony Mackie</name>
-				<id>162653786</id>
+				<name>Emma Stone</name>
+				<id>770683296</id>
 				<characters>
-					<movie>Sam Wilson/Falcon</movie>
+					<movie>Gwen Stacy</movie>
 				</characters>
 			</movie>
 			<movie>
-				<name>Sebastian Stan</name>
-				<id>326299814</id>
+				<name>Jamie Foxx</name>
+				<id>162652975</id>
 				<characters>
-					<movie>Bucky Barnes/Winter Soldier</movie>
+					<movie>Max Dillon/Electro</movie>
 				</characters>
 			</movie>
 			<movie>
-				<name>Samuel L. Jackson</name>
-				<id>162652156</id>
+				<name>Dane DeHaan</name>
+				<id>770873652</id>
 				<characters>
-					<movie>Nick Fury</movie>
+					<movie>Harry Osborn</movie>
 				</characters>
 			</movie>
 			<movie>
-				<name>Scarlett Johansson</name>
-				<id>162652872</id>
+				<name>Chris Cooper</name>
+				<id>162654289</id>
 				<characters>
-					<movie>Natasha Romanoff/Black Widow</movie>
+					<movie>Noman Osborn</movie>
 				</characters>
 			</movie>
 		</abridged_cast>
 		<abridged_directors>
 			<movie>
-				<name>Anthony Russo</name>
-			</movie>
-			<movie>
-				<name>Joe Russo</name>
+				<name>Marc Webb</name>
 			</movie>
 		</abridged_directors>
-		<studio>Walt Disney Pictures</studio>
+		<studio>Sony Pictures</studio>
 		<alternate_ids>
-			<imdb>1843866</imdb>
+			<imdb>1872181</imdb>
 		</alternate_ids>
 		<links>
-			<self>http://api.rottentomatoes.com/api/public/v1.0/movies/771312513.json</self>
-			<alternate>http://www.rottentomatoes.com/m/captain_america_the_winter_soldier_2014/</alternate>
-			<cast>http://api.rottentomatoes.com/api/public/v1.0/movies/771312513/cast.json</cast>
-			<clips>http://api.rottentomatoes.com/api/public/v1.0/movies/771312513/clips.json</clips>
-			<reviews>http://api.rottentomatoes.com/api/public/v1.0/movies/771312513/reviews.json</reviews>
-			<similar>http://api.rottentomatoes.com/api/public/v1.0/movies/771312513/similar.json</similar>
+			<self>http://api.rottentomatoes.com/api/public/v1.0/movies/771249926.json</self>
+			<alternate>http://www.rottentomatoes.com/m/the_amazing_spider_man_2/</alternate>
+			<cast>http://api.rottentomatoes.com/api/public/v1.0/movies/771249926/cast.json</cast>
+			<clips>http://api.rottentomatoes.com/api/public/v1.0/movies/771249926/clips.json</clips>
+			<reviews>http://api.rottentomatoes.com/api/public/v1.0/movies/771249926/reviews.json</reviews>
+			<similar>http://api.rottentomatoes.com/api/public/v1.0/movies/771249926/similar.json</similar>
 		</links>
 		<similar>
 		</similar>
@@ -106,7 +104,7 @@
 			<critics_rating>Rotten</critics_rating>
 			<critics_score>47</critics_score>
 			<audience_rating>Upright</audience_rating>
-			<audience_score>67</audience_score>
+			<audience_score>66</audience_score>
 		</ratings>
 		<synopsis>It&apos;s a jungle out there for Blu, Jewel and their three kids in RIO 2, after they&apos;re hurtled from that magical city to the wilds of the Amazon. As Blu tries to fit in, he goes beak-to-beak with the vengeful Nigel, and meets the most fearsome adversary of all - his father-in-law. All our favorite RIO characters are back, and they&apos;re joined by Oscar (R) nominee Andy Garcia, Grammy (R) winner Bruno Mars, Tony (R) winner Kristin Chenoweth and Oscar/Emmy (R)/Tony winner Rita Moreno. RIO 2 also features new Brazilian artists and original music by Janelle Monae and Wondaland. (c) Fox</synopsis>
 		<posters>
