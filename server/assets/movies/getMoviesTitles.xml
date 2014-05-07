@@ -1,5 +1,14 @@
-xquery version "3.0";
-
-let $movies := doc('movies.xml')
- 
-return $movies//title
+<query xmlns="http://exist.sourceforge.net/NS/exist" 
+    max="4">
+    <text><![CDATA[
+    for $movie in //movie
+    return 
+        <movie>
+            {$movie/id}
+            {$movie/title}
+            {$movie/poster}
+        </movie>]]></text>
+    <properties>
+        <property name="start" value="2"/>
+    </properties>
+</query>

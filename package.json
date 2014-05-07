@@ -57,7 +57,7 @@
     "grunt-env": "^0.4.1",
     "grunt-nodemon": "0.2.0",
     "load-grunt-tasks": "^0.4.0",
-    "xmldom": "^0.1.19",
+    "libxmljs": "^0.9.0",
     "xpath.js": "^0.0.3",
     "restler": "^3.2.2",
     "js2xmlparser": "^0.1.3",

@@ -1,0 +1,16 @@
+<query xmlns="http://exist.sourceforge.net/NS/exist"
+    start="1" 
+    max="4">
+    <text><![CDATA[<movies> {
+    for $movie in //movie
+    return 
+        <movie>
+            {$movie/id}
+            {$movie/title}
+            {$movie/poster}
+        </movie> }
+        </movies>]]></text>
+    <properties>
+        <property name="[indent]" value="[yes]"/>
+    </properties>
+</query>

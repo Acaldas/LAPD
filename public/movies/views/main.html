@@ -1,9 +1,9 @@
 <section data-ng-controller="MoviesMainController">
   <div class="center-block">
-        <input class="search" ng-model="searchTitle" name="Movie" placeholder="Search movie"/>
+        <input id="searchText" type="search" class="search" ng-model="searchText" name="Movie" placeholder="Search movie"/>
         <hr>
         <div class="movies center-block">
-            <div ng-repeat="movie in movies | filter:{title: searchTitle}" class="movie"  ng-click="setMovie(movie.links.self)">
+            <div ng-repeat="movie in movies" class="movie"  ng-click="setMovie(movie)">
                 <h4>{{movie.title}}</h4>
                 <img ng-src="{{movie.poster}}" width="215" height="320" alt="{{movie.title}}">
             </div>

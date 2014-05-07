@@ -1,73 +1,127 @@
 	'use strict';
 
 	var fs = require('fs');
-	var DOMParser = require('xmldom').DOMParser;
-	var js2xmlparser = require("js2xmlparser");
+	var libxmljs = require("libxmljs");
+	var js2xmlparser = require('js2xmlparser');
 	var xml2jsparser = require('xml2js');
 	var apiKey = 'sqef2dd4hmsbfmh29b5bu7rf';
-	var existUsername = "admin";
-	var existPassword = "qweasd";
+	var existUsername = 'admin';
+	var existPassword = 'qweasd';
 	var request = require('request'); //https://github.com/mikeal/request
+	var original_movies_limit = 10;
+	var total_movies_limit = 200;
 
 	exports.getMovie = function(req, res) {
-		res.send(req.params.id);
+		var xpath = { _query: '//movie[id=' + req.params.id + ']',
+					  _wrap: 'no'};
+
+		request.get({url:'http://localhost:8080/exist/rest/db/apps/movies/movies.xml', qs: xpath},  function (error, response, body) {
+			if(response.statusCode == 200 && body != ""){
+				xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+					 if (err) { 
+					    console.log(err);
+					  } else {
+					    res.send(result.movie);
+					  }
+				});																			
+				} else {										
+					console.log('error: '+ response.statusCode);
+					console.log(body);
+					res.send({error: "This movie doesn't exist!"});
+				}
+		}).auth(existUsername, existPassword, true);	
 	};
 
 	exports.getMovies = function(req, res) {
-		request.get('http://localhost:8080/exist/rest/db/apps/movies/getMovies.xq', function (error, response, body) {
-								if(response.statusCode == 200){
+		var url = 'http://localhost:8080/exist/rest/db/apps/movies/getMovies.xq';
+		var filter = req.body.filter;
+		if(filter)
+			url += '?filter=' + filter;
 
-									xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
-										 if (err) { 
-										    console.log(err);
-										  } else {
-										    res.send(result.movies);
-										  }
-									});																			
-									} else {
-										console.log('error: '+ response.statusCode);
-										console.log(body);
-									}
-		}).auth(existUsername, existPassword, true);
+		request.get(url, function (error, response, body) {
+			if(response.statusCode == 200){
 
-		
+				xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+					 if (err) { 
+					    console.log(err);
+					  } else {
+					    res.send(result.movies);
+					  }
+				});																			
+				} else {
+					console.log('error: '+ response.statusCode);
+					console.log(body);
+				}
+		}).auth(existUsername, existPassword, true);		
 	};
 
+	function createQuery(start) {
+
+		fs.readFile('./server/assets/movies/getMoviesTitles.xml', 'utf8', function (err,data) {
+		if (err) 
+		    return console.log(err);
+
+		console.log(data);
+		var doc = libxmljs.parseXml(data);
+		console.log(doc);
+		});		
+	};
 
 	exports.updateMovies = function(req, res) {
-		movies_links = [];
-		request.get('http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=' + apiKey + '&?callback=JSON_CALLBACK&country=pt&page_limit=2',
+		request.get('http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=' + apiKey
+					 + '&?callback=JSON_CALLBACK&country=pt&limit=' + original_movies_limit,
 			function (error, response, body) {
+				
+				var response = JSON.parse(body); //remove \n from rottentomatoes API response
+		        response.movies.forEach(function(movie) {
+		        	movies_links.push(movie.links.self);
+		        	totalMovies++;
+		        });
 
-	        var response = JSON.parse(body); //remove \n from rottentomatoes API response
-	        response.movies.forEach(function(movie) {
-	        	movies_links.push(movie.links.self);
-
-	        });
-			movies_links.push('http://api.rottentomatoes.com/api/public/v1.0/movies/770671912.json'); //add Toy Story 3 (testar similar)
-
+		    movies_links.push('http://api.rottentomatoes.com/api/public/v1.0/movies/770672122.json'); //add Toy Story 3 (testar similar)
+			totalMovies++;
 			getMovieSet(0,null);
-			
+			start = new Date().getTime() / 1000;
 	  		res.send(response.movies); // auto convert to object
-	  	});
+  		});
+    };
 
-	};
-
+    var movies_set = []
 	var movies_links = [];
-	var movies_set = [];
+	var totalMovies = 0;
+	var errors = 0;
+    var start;
+
+    function resetVars() {
+    	movies_links = [];
+    	movies_set = [];
+		totalMovies = 0;
+		errors = 0;
+		start = 0;
+    }
 
 	function getMovieSet(n, movie) {
 
 		if(movie != null) {
 			movies_set.push(movie);
 			n += 1;
+			if((n % 50) == 0)
+			 console.log(n+"\\"+totalMovies + " :" + movie.title);
 		}
 		if(n < movies_links.length ) {
 			getMovieInfo(n);	
 
 	 	} else { //já tem todos os filmes
-			//r doc = new DOMParser().parseFromString(response); //parse json to XML
+			
+			var end = new Date().getTime() / 1000;
 
+			console.log(" Done in " + (end - start) + " seconds." + n + '/' + movies_links.length);
+
+			console.log("Movies_links: " + movies_links.length);
+			console.log("totalMovies: " + totalMovies);
+		    console.log("errors: " + errors);
+		    console.log("done: " + n);
+			
 			var xml_options = {
 				wrapArray: {
 					enabled: true,
@@ -77,6 +131,8 @@
 
 			var movies_xml = js2xmlparser("movies", JSON.stringify(movies_set), xml_options);
 			
+			resetVars();
+
 			fs.writeFile("./server/assets/movies/movies.xml",movies_xml, function(err) {
 				if(err) {
 					console.log(err);
@@ -104,8 +160,7 @@
 					}
 					}).auth(existUsername, existPassword, true));
 
-	 		movies_links = []; //limpar
-	 		movies_set = [];
+	 		resetVars();
 	 	});
 	 }
 	};
@@ -113,23 +168,50 @@
 	 function getMovieInfo(n) {
 	 	request.get(movies_links[n] + '?apikey=' + apiKey, function (error, response, body) {
 	 			var movie = JSON.parse(body);
-		 		getSimilarMovies(n, movie);
-		 		//TODO adicionar outras infos, como trailers,etc
+	 			if(movie.error){
+						errors++;
+						console.log("Error getting " + movie_links[n]);
+				} else {
+		 			
+			 		getSimilarMovies(n, movie);
+			 		//TODO adicionar outras infos, como trailers,etc
+			 	}
 		 	});
 	 };
 
 	 function getSimilarMovies(n, movie) {
 	 	request.get(movie.links.similar + '?apikey=' + apiKey, function (error, response, body) {
-	 		var similar_movies = JSON.parse(body);
-	 		var similar = [];
+			var similar_movies = JSON.parse(body);
+	 		if(similar_movies.error){
+						errors++;
+						console.log("Error getting similar" + movie.links.similar);
+				} else {	 		
+	 			var similar = [];
 		 		similar_movies.movies.forEach(function(similar_movie) {
 		 			similar.push({
 		 				id: similar_movie.id,
 		 				title: similar_movie.title,
-		 				link: similar_movie.posters.detailed
-		 			})
+		 				poster: similar_movie.posters.detailed
+		 			});
+		 			var similar_link = 'http://api.rottentomatoes.com/api/public/v1.0/movies/' + similar_movie.id + '.json';
+		 			if(!containsMovie(similar_link) && totalMovies < total_movies_limit) {
+		 				movies_links.push(similar_link);	
+		 				//console.log("Added similar movie: " + similar_movie.title);
+		 				totalMovies++;
+		 			}
 		 		});
 		 		movie.similar = similar;
-		 		getMovieSet(n,movie);		
+		 		getMovieSet(n,movie);
+		 		}		
 		 	});
 	 };
+
+	 function containsMovie(movie) {
+	    var i = null;
+	    for (i = 0; movies_links.length > i; i += 1) {
+	        if (movies_links[i] === movie) {
+	            return true;
+	        }
+	    }	     
+	    return false;
+	};

@@ -1,7 +1,18 @@
 <section data-ng-controller="MovieController">
   <div class="center-block">
+  <div ng-if="movie.error">
+    <p> {{movie.error}} </p>
+  </div>
         <div class="center-block">
-            <p>aaa</p>
-        </div>    
+           <div>
+            <h1>{{movie.title}}</h1>
+		    <img ng-src="{{movie.poster}}">
+		    <p>{{movie.synopsis}}</p>
+	    </div>
+		<div ng-repeat="similar_movie in similar_movies.similar_movie" class="movie"  ng-click="setMovie(similar_movie)">
+            <h4>{{similar_movie.title}}</h4>
+            <img ng-src="{{similar_movie.poster}}" width="215" height="320" alt="{{similar_movie.title}}">
+        </div>		    
+        </div>
     </div>
 </section>
