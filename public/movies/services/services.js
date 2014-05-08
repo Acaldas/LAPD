@@ -1,10 +1,10 @@
 'use strict';
  
-angular.module('mean.movies').factory('Movies', ['$resource',
-  function($resource) {
+angular.module('mean.movies').factory('Movies', ['$resource', '$location',
+  function($resource, $location) {
   	 return {
-      getMovies: $resource('/getMovie/:id', {id: '@id' }, {
-        query: { method: 'GET', params: {}, isArray: true }
+      getMovies: $resource('/getMovies/:id', {id: '@id' }, {
+        query: { method: 'POST', params: {filter: '@filter'}, isArray: false }
       }),
       update: $resource('/updateMovies', {}, {
         query: { method: 'POST', params: {}, isArray: false }

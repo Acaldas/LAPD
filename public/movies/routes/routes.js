@@ -8,6 +8,10 @@ angular.module('mean.movies').config(['$stateProvider', '$urlRouterProvider',
       .state('main movies', {
         url: '/movies',
         templateUrl: 'public/movies/views/main.html'
+      })
+      .state('show movie', {
+      	url: '/movies/:id',
+        templateUrl: 'public/movies/views/movie.html'
       });
   }
 ]);

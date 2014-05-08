@@ -1,0 +1,7 @@
+xquery version "3.0";
+    declare namespace xdb="http://exist-db.org/xquery/xmldb";
+    declare namespace t="http://exist-db.org/xquery/transform";
+
+    let $movies := t:transform(doc('movies.xml'), doc("movies.xsl"), ())
+    let $store := xdb:store('/apps/movies','movies.xml', $movies)
+    return $store
