@@ -13,6 +13,10 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     // Users.addUser.query({},{name: "Aaa", password: "bbb"}, function (response) {
     //   console.log(response);
     // });     
+  
+    // Users.addRating.query({},{user: "Teste", movie: 771250004, grade: 4}, function (response) {
+    //   console.log(response);
+    // });
 
     var filterTextTimeout;
     $scope.$watch('searchText', function (val) {

@@ -16,6 +16,9 @@ angular.module('mean.movies').factory('Movies', ['$resource', '$location',
   	 return {
       addUser: $resource('/addUser', {}, {
         query: { method: 'POST', params: {name: '@name', password: '@password'}, isArray: false }
+      }),
+      addRating: $resource('/addRating', {}, {
+        query: { method: 'POST', params: {user: '@user', movie: '@movie', actor: '@actor', director: '@director', grade: '@grade'}, isArray: false }
       })
     };
 }]);
