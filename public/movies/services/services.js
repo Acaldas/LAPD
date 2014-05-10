@@ -10,4 +10,12 @@ angular.module('mean.movies').factory('Movies', ['$resource', '$location',
         query: { method: 'POST', params: {}, isArray: false }
       })
     };
+}]).
+	factory('Users', ['$resource', '$location',
+  function($resource, $location) {
+  	 return {
+      addUser: $resource('/addUser', {}, {
+        query: { method: 'POST', params: {name: '@name', password: '@password'}, isArray: false }
+      })
+    };
 }]);
