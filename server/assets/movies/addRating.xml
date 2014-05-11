@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xu:modifications version="1.0" xmlns:xu="http://www.xmldb.org/xupdate">
+  <xu:remove select="//user[name=&quot;Teste&quot;]//rating[movie[id=&quot;771250004&quot;]]"/>
+  <xu:append select="//user[name=&quot;Teste&quot;]/ratings">
+    <xu:element name="rating">
+      <movie>
+        <id>771250004</id>
+      </movie>
+      <date>11-4-2014</date>
+      <grade>4</grade>
+    </xu:element>
+  </xu:append>
+</xu:modifications>

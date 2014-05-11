@@ -3,7 +3,7 @@
 		var fs = require('fs');
 		var libxmljs = require("libxmljs");
 		var js2xmlparser = require('js2xmlparser');
-		var xml2jsparser = require('xml2js');
+		var xml2jsparser = require('xml2js'); //https://github.com/polotek/libxmljs/blob/master/docs/Home.md
 		var apiKey = 'sqef2dd4hmsbfmh29b5bu7rf';
 		var trackMovieLink = 'http://api.trakt.tv/movie/summary.json/15a5b7d3e016c4ea038f03a692565d2b/tt';
 		var existUsername = 'admin';
@@ -30,7 +30,7 @@
 						console.log(body);
 						res.send({error: "This movie doesn't exist!"});
 					}
-			}).auth(existUsername, existPassword, true);	
+			}).auth(existUsername, existPassword, true);
 		};
 
 		exports.getMovies = function(req, res) {
