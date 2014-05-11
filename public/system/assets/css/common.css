@@ -1,3 +1,19 @@
+html, body {
+  height: 100%;
+}
+body {
+  /*background: #27282b url(../../../movies/assets/images/bg-noise-pattern.png);*/
+  background: #1e1e20 none;
+}
+section {
+  height: 100%;
+}
+h1, h2, h3 {
+  margin: 0px;
+}
+td, tr {
+  padding: 0;
+}
 .page-header {
   padding-bottom: 0;
   margin: 0;
@@ -20,12 +36,10 @@
     padding-left:20px;
     margin-left:0
 }
-
-.content {
-    margin-top:70px;
-    width:100%
+.content, .container {
+    width:100%;
+    padding: 0;
 }
-
 footer {
     position:fixed;
     left:0;

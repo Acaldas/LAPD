@@ -1,7 +1,7 @@
 'use strict';
  
-angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$stateParams', '$location', '$timeout', '$http', 'Global','Movies',
-  function($scope, $stateParams, $location,  $timeout, $http, Global, Movies) {
+angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$stateParams', '$location', '$timeout', '$http', 'Global','Movies', 'Users',
+  function($scope, $stateParams, $location,  $timeout, $http, Global, Movies, Users) {
     $scope.global = Global;
     $scope.error = "";
     $scope.filterText = '';
@@ -10,7 +10,13 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
          $location.path('/movies/' + movie.id); 
     };
 
-     
+    // Users.addUser.query({},{name: "Aaa", password: "bbb"}, function (response) {
+    //   console.log(response);
+    // });     
+  
+    // Users.addRating.query({},{user: "Teste", movie: 771250004, grade: 4}, function (response) {
+    //   console.log(response);
+    // });
 
     var filterTextTimeout;
     $scope.$watch('searchText', function (val) {
