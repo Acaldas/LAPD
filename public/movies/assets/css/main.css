@@ -95,6 +95,7 @@ table.main-wrapper > tbody {
   padding: 0px;
   text-align: center;
   padding-bottom: 50px;
+  padding-top: 20px;
 }
 
 .right-side-bar::before {
@@ -174,12 +175,15 @@ table.main-wrapper > tbody {
   color: #999;
 }
 
-.right-side-bar .suggested-movies {
+.right-side-bar .suggested-movies, 
+#quick-movie-description .similar-movies {
   width: 100%;
 }
 
-.right-side-bar .suggested-movies tr {
+.right-side-bar .suggested-movies tr,
+#quick-movie-description .similar-movies tr {
   vertical-align: top;
+  text-align: center;
 }
 
 .right-side-bar .featured-trailer {
@@ -273,6 +277,7 @@ table.main-wrapper > tbody {
   height: 100%;
   overflow-y: auto;
   background: rgba(37, 37, 37, 0.9) url(../../../movies/assets/images/bg-noise-pattern.png);
+  z-index: 1000;
 }
 
 #search-wrapper > .search-components {
@@ -331,4 +336,63 @@ table.main-wrapper > tbody {
 #search-wrapper .search-results {
   width: 90%;
 }
+
+#quick-movie-description {
+  position: fixed;
+  height: 100%;
+  width: 315px;
+  background: rgba(34, 34, 34, 0.88);
+  box-shadow: -1px 0 3px rgba(0, 0, 0, 0.69);
+  top: 0;
+  overflow-y: auto;
+  right: 0;
+  padding-left: 32px;
+  padding-right: 18px;
+}
+
+#quick-movie-description h3 {
+  color: #ddd;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+#quick-movie-description h4 {
+  color: #bbb;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+#quick-movie-description p {
+  color: #ddd;
+  font-style: italic;
+  text-indent: 10px;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+#quick-movie-description .movie {
+  max-width: 120px;
+}
+
+#quick-movie-description .movie h6 {
+  margin-top: 10px;
+  color: #999;
+}
+
+#quick-movie-description .movie .poster.big {
+  width: 200px;
+  height: 306px;
+  box-shadow: 0 2px 11px rgba(0, 0, 0, 0.92);
+}
+
+#quick-movie-description .close-button-bootstrap {
+  position: absolute;
+  top: 26px;
+  color: #EBC812;
+  right: 9px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+
 

@@ -174,4 +174,42 @@
       </div>
     </div>
   </div>
+
+  <div id="quick-movie-description" style="display: none">
+    <div class="close-button-wrapper">
+      <div class="close-button-bootstrap" onclick="$('#quick-movie-description').hide()">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+      </div>
+    </div>
+    <h3>Harry Potter and the Half-Blood Prince</h3>  
+    <div class="movie">
+      <!--<h4>{{movie.title}}</h4>-->
+      <div class="poster big" style="background-image: url('http://content9.flixster.com/movie/11/16/39/11163943_det.jpg');" alt="Harry Potter and the Half-Blood Prince"></div>
+    </div>
+    <p>
+      The sixth year at Hogwarts School of Witchcraft and Wizardry kicks off with a bang for young Harry Potter when he inadvertently discovers a mysterious book that sheds light on the sordid life of the evil Lord Voldemort. Preparing for inevitable battle, Harry and Dumbledore turn to professor Horace Slughorn for help in pinpointing the weakness in Voldemort's forces.
+    </p>
+    <h4>Similar movies</h4>
+      <table class="similar-movies">
+        <tr>
+          <td>
+            <div class="movie ng-scope" ng-click="setMovie(movie)">
+              <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/25/11172532_det.jpg');" alt="Saving Mr. Banks"></div>
+              <h6 class="movie-title">Saving Mr. Banks</h6>
+            </div>
+          </td>
+          <td>
+            <div class="movie ng-scope" ng-click="setMovie(movie)">
+              <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
+              <h6 class="movie-title">The Hobbit: The Desolation Of Smaug</h6>
+            </div>
+          </td>
+        </tr>
+      </table>
+  </div>
+  <script>
+    $('.movie-group .movie').click(function() {
+      $('#quick-movie-description').show();
+    });
+  </script>
 </section
