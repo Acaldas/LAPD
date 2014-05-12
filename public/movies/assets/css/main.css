@@ -341,7 +341,7 @@ table.main-wrapper > tbody {
   position: fixed;
   height: 100%;
   width: 315px;
-  background: rgba(34, 34, 34, 0.88);
+  background: rgba(24, 24, 24, 0.98) url(../../../movies/assets/images/bg-noise-pattern.png);
   box-shadow: -1px 0 3px rgba(0, 0, 0, 0.69);
   top: 0;
   overflow-y: auto;
