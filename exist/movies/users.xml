@@ -1,0 +1,22 @@
+<users>
+    <user>
+        <name>Teste</name>
+        <password>teste</password>
+        <ratings>
+        <rating>
+                <movie>
+                    <id>771250003</id>
+                </movie>
+                <date>10-4-2014</date>
+                <grade>4</grade>
+            </rating>
+            <rating>
+                <actor>
+                    <id>770800260</id>
+                </actor>
+                <date>10-4-2014</date>
+                <grade>4</grade>
+            </rating>
+        </ratings>
+    </user>
+</users>

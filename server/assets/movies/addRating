@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xu:modifications version="1.0" xmlns:xu="http://www.xmldb.org/xupdate">
+    <xu:append select="users">
+        <xu:element name="user">
+                <id>0001</id>
+                <name>User1</name>
+                <password>qwoekqwieqowrio</password>
+                <ratings>
+                    <rating>
+                        <movie>
+                            <id>01230123</id>
+                        </movie>
+                        <grade>3</grade>
+                    </rating>
+                </ratings>
+        </xu:element>
+    </xu:append>
+</xu:modifications>
