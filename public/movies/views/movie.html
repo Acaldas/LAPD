@@ -1,18 +1,103 @@
 <section data-ng-controller="MovieController">
-  <div class="center-block">
-  <div ng-if="movie.error">
-    <p> {{movie.error}} </p>
+    <div class="logo-wrapper">          
+    <a href="#!/movies"><div class="logo"></div></a>
   </div>
-        <div class="center-block">
-           <div>
-            <h1>{{movie.title}}</h1>
-		    <img ng-src="{{movie.poster}}">
-		    <p>{{movie.synopsis}}</p>
-	    </div>
-		<div ng-repeat="similar_movie in similar_movies.similar_movie" class="movie"  ng-click="setMovie(similar_movie)">
-            <h4>{{similar_movie.title}}</h4>
-            <img ng-src="{{similar_movie.poster}}" width="215" height="320" alt="{{similar_movie.title}}">
-        </div>		    
+  <table class="main-wrapper">
+    <tr>
+      <td class="left-wrapper">
+        <div class="side-menu">
+          <div class="items">
+            <h4 class="menu-item" onclick="$('#search-wrapper').show()">
+                <span class="glyphicon glyphicon-search" style="
+                font-size: 21px;
+            "></span>
+            </h4>
+            <h4 class="menu-item">
+                <span class="glyphicon glyphicon-ok" style="
+                font-size: 21px;
+            "></span>
+            </h4>
+            <h4 class="menu-item">
+                <span class="glyphicon glyphicon-eye-open" style="
+                font-size: 21px;
+            "></span>
+            </h4>
+          </div>
         </div>
-    </div>
+      </td>
+      <td class="middle-wrapper">
+        <div class="movies-wrapper" style="text-align:left">
+          <div class="row">
+            <div class="col-md-8" style="padding-left: 50px;">
+              <h2 style="margin-bottom: 20px; color: #ccc;">{{movie.title}}</h2>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="poster" style="background-image: url('{{movie.poster}}'); 
+                  width: 180px; 
+                  height: 268px; 
+                  background-size: 100%;
+                  background-repeat: no-repeat;
+                  box-shadow: 0 2px 11px rgba(0, 0, 0, 0.32);
+                  border-radius: 2px;
+                  border: 3px solid transparent;
+                  " alt="{{movie.title}}"></div>
+                </div>
+                <div class="col-md-8">
+                  <p style="padding: 5px;
+                            padding-left: 20px;
+                            padding-right: 50px;
+                            color: #ddd;
+                            text-indent: 10px;">{{movie.synopsis}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <h5 style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 20px; ">Similar movies</h5>
+              <div ng-repeat="similar_movie in similar_movies.similar_movie" class="movie"  ng-click="setMovie(similar_movie)" style="max-width: 120px;
+                        display: block;
+                        text-align: center;
+                        margin: auto;">
+                <div class="movie" ng-click="setMovie(movie)">
+                  <div class="poster" style="background-image: url('{{similar_movie.poster}}');" alt="{{similar_movie.title}}"></div>
+                  <h6 class="movie-title" style="color: rgba(255,255,255,0.5); margin-top: 10px;"
+
+                  >{{similar_movie.title}}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td class="right-wrapper">
+        <div class="right-side-bar">
+          <div class="right-side-bar-content">
+            <h5>Our Suggestions</h5>
+            <table class="suggested-movies">
+              <tr>
+                <td>
+                  <div class="movie ng-scope" ng-click="setMovie(movie)">
+                    <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/25/11172532_det.jpg');" alt="Saving Mr. Banks"></div>
+                    <h6 class="movie-title">Saving Mr. Banks</h6>
+                  </div>
+                </td>
+                <td>
+                  <div class="movie ng-scope" ng-click="setMovie(movie)">
+                    <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
+                    <h6 class="movie-title">The Hobbit: The Desolation Of Smaug</h6>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <h5>Featured Trailer</h5>
+            <iframe class="featured-trailer" width="270" height="140" src="http://v.traileraddict.com/90315" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" scrolling="no"></iframe>
+            <h6 class="movie-title">The Normal Heart (2014)</h6>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+
 </section>

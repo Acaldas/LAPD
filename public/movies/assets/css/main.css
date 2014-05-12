@@ -224,6 +224,7 @@ table.main-wrapper > tbody {
   width: 100px;
   height: 60px;
   background-size: 100%;
+  cursor: pointer;
 }
 
 .header > * {
