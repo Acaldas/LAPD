@@ -3,13 +3,23 @@ html, body {
 }
 body {
   /*background: #27282b url(../../../movies/assets/images/bg-noise-pattern.png);*/
-  background: #1e1e20 none;
+  /*background: #1e1e20 none;*/
+  background: #1d1d1d;
+  color: #efefef;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 section {
   height: 100%;
 }
-h1, h2, h3 {
+h1, h2, h3, h4, h5, h6 {
   margin: 0px;
+}
+h4 {
+  font-size: 16px;
+}
+h5 {
+  font-size: 14px;
 }
 td, tr {
   padding: 0;
@@ -54,4 +64,26 @@ footer {
 
 footer p {
     padding:5px 0 12px 10px
+}
+
+*::-webkit-input-placeholder {
+    color: #ccc;
+}
+*:-moz-placeholder {
+    /* FF 4-18 */
+    color: #ccc;
+}
+*::-moz-placeholder {
+    /* FF 19+ */
+    color: #ccc;
+}
+*:-ms-input-placeholder {
+    /* IE 10+ */
+    color: #ccc;
+}
+.col-md-6 {
+  padding: 0;
+}
+.row {
+  margin: 0;
 }

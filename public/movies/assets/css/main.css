@@ -43,77 +43,188 @@ table.main-wrapper > tbody {
 
 .movies-wrapper {
   height: 100%;
+  padding-top: 40px;
   overflow-y: auto;
+  text-align: center;
 }
 
-.movies {
-  padding: 15px;
-  padding-top: 75px;
-  display: inline-block;
+.movies-wrapper h3 {
+  /*font-weight: initial;*/
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.movies-wrapper .movie-group-wrapper {
+  /*margin-top: 40px;*/
+  text-align: left;
+}
+
+.movies-wrapper .movie-group {
+  padding: 40px;
+  padding-right: 20px;
+}
+
+.movies-wrapper .movie {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .right-wrapper {
-  width: 330px;
-  background-image: url(../../../movies/assets/images/bg-noise-pattern.png);
-}
-/*
-.movies-wrapper {
-  box-shadow: 25px 0px 10px -25px rgba(0, 0, 0, 0.34);
+  width: 300px;
+  background: #222222 url(../../../movies/assets/images/bg-noise-pattern.png);
 }
 
-.right-side-bar {
-  box-shadow: -25px 0px 10px -25px rgba(0, 0, 0, 0.34);
-}*/
+.left-wrapper {
+  width: 45px;
+}
+
+.side-menu {
+  height: 100%;
+  overflow-y: auto;
+  background: #222222 url(../../../movies/assets/images/bg-noise-pattern.png);
+}
 
 .right-side-bar {
   height: 100%;
   overflow-y: auto;
+  /*background: #222222 url(../../../movies/assets/images/bg-noise-pattern.png);*/
+}
+
+.right-side-bar-content {
+  padding: 0px;
+  text-align: center;
+  padding-bottom: 50px;
 }
 
 .right-side-bar::before {
   content: " ";
   display: block;
-  /* position: absolute; */
   height: 100%;
   width: 2px;
+  position: absolute;
   background: url('../images/bg-border-left.png') left repeat-y;
+}
+
+.side-menu::after {
+  content: " ";
+  display: block;
+  height: 100%;
+  width: 2px;
+  float: right;
+  background: url('../images/bg-border-left.png') left repeat-y;
+}
+
+.side-menu .items {
+  float: left;
+  padding-top: 80px;
+  width: 43px;
+  text-align: center;
+}
+
+.side-menu .items > .menu-item {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  cursor: pointer;
+  text-shadow: 0 0 1px #000;
+  color: #999;
+  border-right: 2px solid transparent;
+
+  -webkit-transition: all 0.3s ease-out;  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */
+  transition: all 0.3s ease-out;
+}
+
+.side-menu .items > .menu-item:hover {
+  color: #fff;
+  /*border-right-color: rgba(255,255,255,0.2);*/
+}
+
+.movies {
+  padding: 15px;
+  padding-top: 30px;
+  display: inline-block;
+  text-align: center;
 }
 
 .movie {
     max-width: 250px;
-    float: left;
+    display: inline-block;
     margin-bottom: 20px;
     margin-right: 2px;
     margin-left: 2px;
     cursor:pointer;
 }
 
+.right-side-bar h5 {
+  margin-bottom: 20px;
+  margin-top: 30px;
+  color: #d5d5d5;
+}
+
+.right-side-bar .movie {
+  max-width: 120px;
+}
+
+.right-side-bar .movie .poster {
+  z-index: 0;
+}
+
+.right-side-bar h6.movie-title {
+  margin-top: 10px;
+  color: #999;
+}
+
+.right-side-bar .suggested-movies {
+  width: 100%;
+}
+
+.right-side-bar .suggested-movies tr {
+  vertical-align: top;
+}
+
+.right-side-bar .featured-trailer {
+  border: none;
+  box-shadow: 0 2px 11px rgba(0, 0, 0, 0.32);
+  border-radius: 2px;
+  border: 3px solid transparent;
+}
+
 .search {
     color: #000000;
 }
 
-.header {
-  height: 60px;
-  padding: 15px;
-  padding-bottom: 10px;
-  position: fixed;
+.header-wrapper {
+  height: 0;
+  overflow: visible;
   z-index: 10;
-  background-color: rgba(0, 0, 0, 0.69);
+  position: relative;
 }
 
-/*td.header::after {
-  content: "";
-  width: 100%;
-  height: 2px;
-  display: block;
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  z-index: 1;
-  background-image: url(http://static.gamespot.com/bundles/gamespotsite/images/bg-border-dark.png);
-  background-position: bottom;
-  background-repeat: repeat-x;
-}*/
+.header {
+  height: 45px;
+  padding: 15px;
+  padding-top: 3px;
+  z-index: 10;
+  /*background: url(../../../movies/assets/images/bg-fade-top.png) left top repeat-x;
+  background-size: 1px 100%;*/
+  background: #222222 url(../../../movies/assets/images/bg-noise-pattern.png);
+  /*background: rgba(28, 28, 28, 0.95);*/
+}
+
+.logo-wrapper {
+  width: 0;
+  height: 0;
+  overflow: visible;
+  position: relative;
+  top: 15px;
+}
+
+.logo {
+  background: url(../../../movies/assets/images/logo.png) left top repeat-x;
+  width: 100px;
+  height: 60px;
+  background-size: 100%;
+}
 
 .header > * {
   display: inline-block;
@@ -124,15 +235,99 @@ table.main-wrapper > tbody {
   font-size: 33px;
 }
 
-.movies .poster {
+.header .menu-item {
+  padding: 5px;
+  font-size: 14px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/*.header .menu-item:not(:last-child) {
+  border-right: 2px solid #fff;
+}*/
+
+.movie .poster {
   width: 120px;
   height: 175px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   
   box-shadow: 0 2px 11px rgba(0, 0, 0, 0.32);
-  border-radius: 3px;
+  border-radius: 2px;
   border: 3px solid transparent;
   
-  
+  position: relative;
+  z-index: -10;
 }
+
+#search-wrapper .search-results .movies .poster {
+  width: 150px;
+  height: 220px;
+}
+
+#search-wrapper {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background: rgba(37, 37, 37, 0.9) url(../../../movies/assets/images/bg-noise-pattern.png);
+}
+
+#search-wrapper > .search-components {
+  margin-top: 100px;
+}
+
+#search-wrapper .search-input-wrapper,
+#search-wrapper .search-results {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#searchText {
+  outline: none;
+  width: 100%;
+  height: 100px;
+  display: block;
+
+  background: rgba(0,0,0,0.5);
+  border: none;
+  padding: 30px;
+  font-weight: bolder;
+  text-transform: uppercase;
+  font-size: 32px;
+  font-style: italic;
+  color: #FFFFFF;
+  border-radius: 2px;
+  box-shadow: inset 0 2px 11px rgba(0, 0, 0, 1);
+}
+
+.search-input-wrapper {
+  width: 80%;
+  max-width: 800px;
+}
+
+.close-button-wrapper {
+  width: 0;
+  height: 0;
+  overflow: visible;
+  float: right;
+  position: relative;
+  top: -15px;
+  left: 15px;
+}
+
+.close-button {
+  background: url('http://o.aolcdn.com/os/moviefone/img/sprite-mf-main.png') no-repeat -118px -457px rgba(0,0,0,0);
+  height: 30px;
+  width: 30px;
+  display: block;
+  opacity: 0.8;
+  float: right;
+  cursor: pointer;
+}
+
+#search-wrapper .search-results {
+  width: 90%;
+}
+
