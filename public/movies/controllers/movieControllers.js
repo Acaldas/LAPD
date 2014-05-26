@@ -18,6 +18,17 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     //   console.log(response);
     // });
 
+
+  //get most rated movies
+  Movies.getSpecialList.get({},{'type': 1}, function (response){
+      $scope.mostRatedMovies = response.most_rated.movie;
+    });
+
+  //get best rated movies
+  Movies.getSpecialList.get({},{'type': 2}, function (response){
+      $scope.bestRatedMovies = response.best_rated.movie;
+    });
+
     var filterTextTimeout;
     $scope.$watch('searchText', function (val) {
         if (filterTextTimeout) $timeout.cancel(filterTextTimeout);
@@ -37,9 +48,8 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
 
             });
         }, 200); // delay 250 ms
-    });
-      // Get movie with id 1
-      //$scope.test = Movies.getMovies.get({},{'id': 1}); //http://www.masnun.com/2013/08/28/rest-access-in-angularjs-using-ngresource.html
+    });   
+      
 
       // $scope.update = Movies.update.query(function(response) {
       // Movies.getMovies.query(function (response){ 
