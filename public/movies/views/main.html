@@ -41,30 +41,10 @@
               <div class="movie-group">
                 <h3>Best rated</h3>
 
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
+               <div ng-repeat="movie in bestRatedMovies" class="movie" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content9.flixster.com/movie/11/16/39/11163943_det.jpg');" alt="The Hunger Games: Catching Fire"></div>
-                </div><!-- end ngRepeat: movie in movies -->
-
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
-                  <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/35/11173584_det.jpg');" alt="Frozen"></div>
-                </div>
-
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
-                <!--<h4>{{movie.title}}</h4>-->
-                <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
-                </div>
-
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
-                  <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/40/11174000_det.jpg');" alt="Inside Llewyn Davis"></div>
-                </div>
-
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
-                  <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/46/11174676_det.jpg');" alt="Out of the Furnace"></div>
-                </div>
+                  <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
+                </div>    
               </div>
             </div>
 
@@ -94,31 +74,10 @@
             <div class="col-md-6 movie-group-wrapper">
               <div class="movie-group">
                 <h3>Most rated</h3>
-
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
+                 <div ng-repeat="movie in mostRatedMovies" class="movie" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/64/11176484_det.jpg');" alt="The Hunger Games: Catching Fire"></div>
-                </div><!-- end ngRepeat: movie in movies -->
-
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
-                  <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/35/11173584_det.jpg');" alt="Frozen"></div>
-                </div>
-
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
-                <!--<h4>{{movie.title}}</h4>-->
-                <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
-                </div>
-
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
-                  <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/40/11174000_det.jpg');" alt="Inside Llewyn Davis"></div>
-                </div>
-
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
-                  <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/46/11174676_det.jpg');" alt="Out of the Furnace"></div>
-                </div>
+                  <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
+                </div>               
               </div>
             </div>
           </div>

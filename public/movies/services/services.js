@@ -8,7 +8,8 @@ angular.module('mean.movies').factory('Movies', ['$resource', '$location',
       }),
       update: $resource('/updateMovies', {}, {
         query: { method: 'POST', params: {}, isArray: false }
-      })
+      }),
+      getSpecialList: $resource('/getSpecialList/:type', {type : '@type'}, {})  
     };
 }]).
 	factory('Users', ['$resource', '$location',

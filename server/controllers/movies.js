@@ -254,3 +254,35 @@
 		    }	     
 		    return false;
 		};
+
+		exports.getSpecialList  = function( req, res) {
+			/*
+				type = 1, get Most Rated
+				type = 2, get Best Rated
+			*/
+			var query = "";
+			var type = req.params.type;
+			if(type == 1)
+				query = "getMostRated.xq";
+			else if(type == 2)
+				query = "getBestRated.xq";
+
+			var url = 'http://localhost:8080/exist/rest/db/apps/movies/' + query;
+
+			request.get(url, function (error, response, body) {
+				if(response.statusCode == 200){
+
+					xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+						 if (err) { 
+						    console.log(err);
+						  } else {
+						    res.send(result);
+						  }
+					});																			
+					} else {
+						console.log('error: '+ response.statusCode);
+						console.log(body);
+					}
+			}).auth(existUsername, existPassword, true);
+
+		}
