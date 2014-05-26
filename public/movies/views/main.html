@@ -7,10 +7,11 @@
       <td class="left-wrapper">
         <div class="side-menu">
           <div class="items">
-            <h4 class="menu-item" onclick="$('#search-wrapper').show()">
+            <h4 class="menu-item tooltips" onclick="$('#search-wrapper').show()">
                 <span class="glyphicon glyphicon-search" style="
                 font-size: 21px;
             "></span>
+            <span class="tooltip">Tooltip</span>
             </h4>
             <h4 class="menu-item">
                 <span class="glyphicon glyphicon-ok" style="
@@ -30,7 +31,7 @@
           <!-- <div class="movies">
             <div ng-repeat="movie in movies" class="movie" ng-click="setMovie(movie)">
               <h4>{{movie.title}}</h4>
-              <div class="poster" style="background-image: url('{{movie.poster}}');" alt="{{movie.title}}"></div>
+              <div class="poster" style="background-image: url('{{movie.poster}}');" title="{{movie.title}}"></div>
             </div>
             <div class="error">
               <p>{{error}}</p>
@@ -43,27 +44,27 @@
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/64/11176484_det.jpg');" alt="The Hunger Games: Catching Fire"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/64/11176484_det.jpg');" title="The Hunger Games: Catching Fire"></div>
                 </div><!-- end ngRepeat: movie in movies -->
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/35/11173584_det.jpg');" alt="Frozen"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/35/11173584_det.jpg');" title="Frozen"></div>
                 </div>
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                 <!--<h4>{{movie.title}}</h4>-->
-                <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
+                <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" title="The Hobbit: The Desolation Of Smaug"></div>
                 </div>
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/40/11174000_det.jpg');" alt="Inside Llewyn Davis"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/40/11174000_det.jpg');" title="Inside Llewyn Davis"></div>
                 </div>
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/46/11174676_det.jpg');" alt="Out of the Furnace"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/46/11174676_det.jpg');" title="Out of the Furnace"></div>
                 </div>
               </div>
             </div>
@@ -75,17 +76,17 @@
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/64/11176484_det.jpg');" alt="The Hunger Games: Catching Fire"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/64/11176484_det.jpg');" title="The Hunger Games: Catching Fire"></div>
                 </div><!-- end ngRepeat: movie in movies -->
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/40/11174000_det.jpg');" alt="Inside Llewyn Davis"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/40/11174000_det.jpg');" title="Inside Llewyn Davis"></div>
                 </div>
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/46/11174676_det.jpg');" alt="Out of the Furnace"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/46/11174676_det.jpg');" title="Out of the Furnace"></div>
                 </div>
               </div>
             </div>
@@ -97,27 +98,27 @@
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/64/11176484_det.jpg');" alt="The Hunger Games: Catching Fire"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/64/11176484_det.jpg');" title="The Hunger Games: Catching Fire"></div>
                 </div><!-- end ngRepeat: movie in movies -->
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/35/11173584_det.jpg');" alt="Frozen"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/35/11173584_det.jpg');" title="Frozen"></div>
                 </div>
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                 <!--<h4>{{movie.title}}</h4>-->
-                <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
+                <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" title="The Hobbit: The Desolation Of Smaug"></div>
                 </div>
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/40/11174000_det.jpg');" alt="Inside Llewyn Davis"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/40/11174000_det.jpg');" title="Inside Llewyn Davis"></div>
                 </div>
 
                 <div class="movie ng-scope" ng-click="setMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
-                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/46/11174676_det.jpg');" alt="Out of the Furnace"></div>
+                  <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/46/11174676_det.jpg');" title="Out of the Furnace"></div>
                 </div>
               </div>
             </div>
@@ -132,13 +133,13 @@
               <tr>
                 <td>
                   <div class="movie ng-scope" ng-click="setMovie(movie)">
-                    <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/25/11172532_det.jpg');" alt="Saving Mr. Banks"></div>
+                    <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/25/11172532_det.jpg');" title="Saving Mr. Banks"></div>
                     <h6 class="movie-title">Saving Mr. Banks</h6>
                   </div>
                 </td>
                 <td>
                   <div class="movie ng-scope" ng-click="setMovie(movie)">
-                    <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
+                    <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" title="The Hobbit: The Desolation Of Smaug"></div>
                     <h6 class="movie-title">The Hobbit: The Desolation Of Smaug</h6>
                   </div>
                 </td>
@@ -165,7 +166,7 @@
         <div class="movies">
           <div ng-repeat="movie in movies" class="movie" ng-click="setMovie(movie)">
             <!--<h4>{{movie.title}}</h4>-->
-            <div class="poster" style="background-image: url('{{movie.poster}}');" alt="{{movie.title}}"></div>
+            <div class="poster" style="background-image: url('{{movie.poster}}');" title="{{movie.title}}"></div>
           </div>
           <div class="error">
             <p>{{error}}</p>
@@ -184,7 +185,7 @@
     <h3>Harry Potter and the Half-Blood Prince</h3>  
     <div class="movie">
       <!--<h4>{{movie.title}}</h4>-->
-      <div class="poster big" style="background-image: url('http://content9.flixster.com/movie/11/16/39/11163943_det.jpg');" alt="Harry Potter and the Half-Blood Prince"></div>
+      <div class="poster big" style="background-image: url('http://content9.flixster.com/movie/11/16/39/11163943_det.jpg');" title="Harry Potter and the Half-Blood Prince"></div>
     </div>
     <p>
       The sixth year at Hogwarts School of Witchcraft and Wizardry kicks off with a bang for young Harry Potter when he inadvertently discovers a mysterious book that sheds light on the sordid life of the evil Lord Voldemort. Preparing for inevitable battle, Harry and Dumbledore turn to professor Horace Slughorn for help in pinpointing the weakness in Voldemort's forces.
@@ -194,13 +195,13 @@
         <tr>
           <td>
             <div class="movie ng-scope" ng-click="setMovie(movie)">
-              <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/25/11172532_det.jpg');" alt="Saving Mr. Banks"></div>
+              <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/25/11172532_det.jpg');" title="Saving Mr. Banks"></div>
               <h6 class="movie-title">Saving Mr. Banks</h6>
             </div>
           </td>
           <td>
             <div class="movie ng-scope" ng-click="setMovie(movie)">
-              <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
+              <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" title="The Hobbit: The Desolation Of Smaug"></div>
               <h6 class="movie-title">The Hobbit: The Desolation Of Smaug</h6>
             </div>
           </td>
