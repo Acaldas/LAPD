@@ -30,27 +30,40 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     });
 
     var filterTextTimeout;
+    var start = 1;
+    var max = 20;
+
+      
+      
+    var start = 1;
+    var filter;
+    $scope.getMovies = function () {
+      Movies.getMovies.query({},{start: start, filter: filter}, function (response){ 
+        if(response.movie) {//check if some movie was found 
+          $scope.error = "";
+          if(response.movie.length) //check if search returned various movies or only one
+            $scope.movies = response.movie;    
+          else
+            $scope.movies = response;
+        } else {
+          $scope.movies = {};
+          $scope.error = "No movies found"
+        }
+
+      });
+
+    };
+
+    $scope.getMoreMovies = function () {
+      console.log("aaa");
+       start += 20;
+    };
+
     $scope.$watch('searchText', function (val) {
         if (filterTextTimeout) $timeout.cancel(filterTextTimeout);
-
-        filterTextTimeout = $timeout(function() {
-            Movies.getMovies.query({},{filter: val}, function (response){ 
-              if(response.movie) {//check if some movie was found 
-                $scope.error = "";
-                if(response.movie.length) //check if search returned various movies or only one
-                  $scope.movies = response.movie;    
-                else
-                  $scope.movies = response;
-              } else {
-                $scope.movies = {};
-                $scope.error = "No movies found"
-              }
-
-            });
-        }, 200); // delay 250 ms
-    });   
-      
-
+        filter = val;
+        filterTextTimeout = $timeout($scope.getMovies, 200); // delay 250 ms
+    }); 
       // $scope.update = Movies.update.query(function(response) {
       // Movies.getMovies.query(function (response){ 
       //    $scope.movies = response.movie;

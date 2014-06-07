@@ -36,8 +36,14 @@
 		exports.getMovies = function(req, res) {
 			var url = 'http://localhost:8080/exist/rest/db/apps/movies/getMovies.xq';
 			var filter = req.body.filter;
+			var start = req.body.start;
+			var max = req.body.max;
+
+
+			url += '?max=' + max;
+
 			if(filter)
-				url += '?filter=' + filter;
+				url += '&filter=' + filter;
 
 			request.get(url, function (error, response, body) {
 				if(response.statusCode == 200){
