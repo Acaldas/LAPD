@@ -10,6 +10,14 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
          $location.path('/movies/' + movie.id); 
     };
 
+
+    $scope.synchronizeTrakt = function(user, traktUser, traktPassword) {
+      Movies.synchronizeTrakt.query({},{user: user, traktUser: traktUser, traktPassword: traktPassword}, function (response){ 
+        console.log(response);
+      });
+    }
+
+    $scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
     // Users.addUser.query({},{name: "Aaa", password: "bbb"}, function (response) {
     //   console.log(response);
     // });     
@@ -21,20 +29,19 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
   
   $scope.quickMovie = null;
   $scope.showQuickMovie = false;
+
   //set quick description movie
-  $scope.setQuickMovie = function(movie){
-         
+  $scope.setQuickMovie = function(movie){ 
     Movies.getMovies.get({},{'id': movie.id}, function (response){                         
       $scope.quick_similar_movies = response.similar_movies.similar_movie;
-      console.log(response.similar_movies);
       $scope.quickMovie = response;
       $scope.showQuickMovie = true;
     });             
   };
-
   $scope.hideQuickMovie = function() {
      $scope.showQuickMovie = false;
   };
+
 
   //get most rated movies
   Movies.getSpecialList.get({},{'type': 1}, function (response){
@@ -50,9 +57,6 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     var start = 1;
     var max = 20;
 
-      
-      
-    var start = 1;
     var filter;
     $scope.getMovies = function () {
       Movies.getMovies.query({},{start: start, filter: filter}, function (response){ 
@@ -91,6 +95,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
 .controller('MovieController', ['$scope', '$location', '$stateParams', 'Movies', function($scope, $location, $stateParams, Movies) {
   
   Movies.getMovies.get({},{'id': $stateParams.id}, function (response){
+    $scope.error = response.error;
     $scope.movie = response;                          
     $scope.similar_movies = response.similar_movies.similar_movie;
 

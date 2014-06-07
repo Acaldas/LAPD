@@ -26,9 +26,13 @@
         </div>
       </td>
       <td class="middle-wrapper">
-        <div class="movies-wrapper" style="text-align:left">
+      <div class="error">
+        <p style="margin-left:100px">{{error}}</p>
+      </div>
+        <div class="movies-wrapper" style="text-align:left" ng-hide="error">
           <div class="row">
             <div class="col-md-8" style="padding-left: 50px;">
+             
               <h2 style="margin-bottom: 20px; color: #ccc;">{{movie.title}}</h2>
 
               <div class="row">
@@ -52,7 +56,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" ng-show="similar_movies">
               <h5 style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 20px; ">Similar movies</h5>
               <div ng-repeat="similar_movie in similar_movies" class="movie"  ng-click="setMovie(similar_movie)" style="max-width: 120px;
                         display: block;
@@ -60,9 +64,7 @@
                         margin: auto;">
                 <div class="movie" ng-click="setMovie(movie)">
                   <div class="poster" style="background-image: url({{similar_movie.poster}});" alt="{{similar_movie.title}}"></div>
-                  <h6 class="movie-title" style="color: rgba(255,255,255,0.5); margin-top: 10px;"
-
-                  >{{similar_movie.title}}</h6>
+                  <h6 class="movie-title" style="color: rgba(255,255,255,0.5); margin-top: 10px;">{{similar_movie.title}}</h6>
                 </div>
               </div>
             </div>

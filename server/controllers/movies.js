@@ -5,12 +5,14 @@
 		var js2xmlparser = require('js2xmlparser');
 		var xml2jsparser = require('xml2js'); //https://github.com/polotek/libxmljs/blob/master/docs/Home.md
 		var apiKey = 'sqef2dd4hmsbfmh29b5bu7rf';
-		var trackMovieLink = 'http://api.trakt.tv/movie/summary.json/15a5b7d3e016c4ea038f03a692565d2b/tt';
+		var traktApiKey = '15a5b7d3e016c4ea038f03a692565d2b';
+		var traktMovieLink = 'http://api.trakt.tv/movie/summary.json/' + traktApiKey + '/tt';
 		var existUsername = 'admin';
 		var existPassword = 'qweasd';
 		var request = require('request'); //https://github.com/mikeal/request
 		var original_movies_limit = 30;
 		var total_movies_limit = 200;
+		var crypto = require('crypto');
 
 		exports.getMovie = function(req, res) {
 			var xpath = { _query: '//movie[id=' + req.params.id + ']',
@@ -204,7 +206,7 @@
 		 		synopsisMissing++;
 		 		var alternate_ids = movie.alternate_ids;
 		 		if(alternate_ids) {
-			 		request.get(trackMovieLink + alternate_ids.imdb, function (error, response, body) {
+			 		request.get(traktMovieLink + alternate_ids.imdb, function (error, response, body) {
 			 			if(response.statusCode == 200) {
 			 				var synopsis = JSON.parse(body).overview;
 			 				movie.synopsis = synopsis;
@@ -291,4 +293,64 @@
 					}
 			}).auth(existUsername, existPassword, true);
 
+		}
+
+		exports.synchronizeTrakt = function( req, res) {
+			var body = req.body;
+			var user = body.user;
+			var traktUser = body.traktUser;
+			var password = body.traktPassword;
+
+			if(user != null && traktUser != null && password != null) {
+				password = crypto.createHash('sha1').update(password, 'utf8').digest('hex');
+				getTraktRatings(user, traktUser, password, res);
+
+			}
+		}
+
+		function getTraktRatings(user, traktUser, traktPassword, res) {
+
+			var url = 'http://api.trakt.tv/user/ratings/movies.json/' + traktApiKey;
+
+			url += '/' + traktUser;
+
+			request.get(url, function (error, response, body) { //get trakt.tv ratings
+				if(response.statusCode == 200){
+					var traktRatings = JSON.parse(body);
+
+					var ratings = '<ratings>';
+					traktRatings.forEach(function (traktRating){
+						ratings += '<rating>';
+						ratings += '<imdb>'+  traktRating.imdb_id.substring(2) + '</imdb>';						
+						ratings += '<grade>'+ Math.round(traktRating.rating_advanced/2) + '</grade>';	
+						ratings += '<trakt_id>' + traktRating.inserted + '</trakt_id>';			
+						ratings += '</rating>';
+					});
+					ratings += '</ratings>';
+
+					var url = 'http://localhost:8080/exist/rest/db/apps/movies/addTraktRatings.xq';					
+					var date = new Date();
+					var dateString = date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
+
+			request.post(url, {form:{user: user, traktuser: traktUser, traktpassword: traktPassword, date:dateString, query: ratings}} ,function (error, response, body) {  //get our ids for trakt.tv rating
+				if(response.statusCode == 200){
+
+					xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+						 if (err) { 
+						    console.log(err);
+						  } else {
+						    res.send(result);
+						  }
+					});																			
+					} else {
+						console.log('error: '+ response.statusCode);
+						console.log(body);
+					}
+			}).auth(existUsername, existPassword, true);
+
+					} else {
+						console.log('error: '+ response.statusCode);
+						console.log(body);
+					}
+			});			
 		}
