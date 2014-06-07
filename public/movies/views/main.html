@@ -41,7 +41,7 @@
               <div class="movie-group">
                 <h3>Best rated</h3>
 
-               <div ng-repeat="movie in bestRatedMovies" class="movie" ng-click="setMovie(movie)">
+               <div ng-repeat="movie in bestRatedMovies" class="movie" ng-click="setQuickMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
                   <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
                 </div>    
@@ -53,17 +53,17 @@
               <div class="movie-group">
                 <h3>Most viewed</h3>
 
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
+                <div class="movie ng-scope" ng-click="setQuickMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
                   <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/64/11176484_det.jpg');" alt="The Hunger Games: Catching Fire"></div>
                 </div><!-- end ngRepeat: movie in movies -->
 
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
+                <div class="movie ng-scope" ng-click="setQuickMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
                   <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/40/11174000_det.jpg');" alt="Inside Llewyn Davis"></div>
                 </div>
 
-                <div class="movie ng-scope" ng-click="setMovie(movie)">
+                <div class="movie ng-scope" ng-click="setQuickMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
                   <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/46/11174676_det.jpg');" alt="Out of the Furnace"></div>
                 </div>
@@ -74,7 +74,7 @@
             <div class="col-md-6 movie-group-wrapper">
               <div class="movie-group">
                 <h3>Most rated</h3>
-                 <div ng-repeat="movie in mostRatedMovies" class="movie" ng-click="setMovie(movie)">
+                 <div ng-repeat="movie in mostRatedMovies" class="movie" ng-click="setQuickMovie(movie)">
                   <!--<h4>{{movie.title}}</h4>-->
                   <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
                 </div>               
@@ -90,13 +90,13 @@
             <table class="suggested-movies">
               <tr>
                 <td>
-                  <div class="movie ng-scope" ng-click="setMovie(movie)">
+                  <div class="movie ng-scope" ng-click="setQuickMovie(movie)">
                     <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/25/11172532_det.jpg');" alt="Saving Mr. Banks"></div>
                     <h6 class="movie-title">Saving Mr. Banks</h6>
                   </div>
                 </td>
                 <td>
-                  <div class="movie ng-scope" ng-click="setMovie(movie)">
+                  <div class="movie ng-scope" ng-click="setQuickMovie(movie)">
                     <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
                     <h6 class="movie-title">The Hobbit: The Desolation Of Smaug</h6>
                   </div>
@@ -134,41 +134,29 @@
     </div>
   </div>
 
-  <div id="quick-movie-description" style="display: none">
+  <div id="quick-movie-description" ng-show="showQuickMovie">
     <div class="close-button-wrapper">
-      <div class="close-button-bootstrap" onclick="$('#quick-movie-description').hide()">
+      <div class="close-button-bootstrap" ng-click="hideQuickMovie()">
         <span class="glyphicon glyphicon-remove-sign"></span>
       </div>
     </div>
-    <h3>Harry Potter and the Half-Blood Prince</h3>  
-    <div class="movie">
+    <h3 ng-click="setMovie(quickMovie)">{{quickMovie.title}}</h3>  
+    <div class="movie" ng-click="setMovie(quickMovie)">
       <!--<h4>{{movie.title}}</h4>-->
-      <div class="poster big" style="background-image: url('http://content9.flixster.com/movie/11/16/39/11163943_det.jpg');" alt="Harry Potter and the Half-Blood Prince"></div>
+      <div class="poster big" style="background-image: url({{quickMovie.poster}});" alt="{{quickMovie.title}}" ng-click="setMovie(quickMovie)"></div>
     </div>
     <p>
-      The sixth year at Hogwarts School of Witchcraft and Wizardry kicks off with a bang for young Harry Potter when he inadvertently discovers a mysterious book that sheds light on the sordid life of the evil Lord Voldemort. Preparing for inevitable battle, Harry and Dumbledore turn to professor Horace Slughorn for help in pinpointing the weakness in Voldemort's forces.
+      {{quickMovie.synopsis}}
     </p>
-    <h4>Similar movies</h4>
+    <h4 ng-show="quick_similar_movies">Similar movies</h4>
       <table class="similar-movies">
-        <tr>
-          <td>
-            <div class="movie ng-scope" ng-click="setMovie(movie)">
-              <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/64/11176484_det.jpg');" alt="Saving Mr. Banks"></div>
-              <h6 class="movie-title">The Hunger Game: Catching Fire</h6>
-            </div>
-          </td>
-          <td>
-            <div class="movie ng-scope" ng-click="setMovie(movie)">
-              <div class="poster" style="background-image: url('http://content6.flixster.com/movie/11/17/69/11176940_det.jpg');" alt="The Hobbit: The Desolation Of Smaug"></div>
-              <h6 class="movie-title">The Hobbit: The Desolation Of Smaug</h6>
-            </div>
-          </td>
+      <tr>
+        <td ng-repeat="similar_movie in quick_similar_movies" class="movie" ng-click="setMovie(similar_movie)">
+            <!--<h4>{{movie.title}}</h4>-->
+            <div class="poster" style="background-image: url({{similar_movie.poster}});" alt="{{similar_movie.title}}"></div>
+            <h6 class="movie-title">{{similar_movie.title}}</h6>
+        </td>
         </tr>
       </table>
   </div>
-  <script>
-    $('.movie-group .movie').click(function() {
-      $('#quick-movie-description').show();
-    });
-  </script>
 </section

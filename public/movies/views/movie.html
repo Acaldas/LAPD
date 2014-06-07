@@ -54,12 +54,12 @@
             </div>
             <div class="col-md-4">
               <h5 style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 20px; ">Similar movies</h5>
-              <div ng-repeat="similar_movie in similar_movies.similar_movie" class="movie"  ng-click="setMovie(similar_movie)" style="max-width: 120px;
+              <div ng-repeat="similar_movie in similar_movies" class="movie"  ng-click="setMovie(similar_movie)" style="max-width: 120px;
                         display: block;
                         text-align: center;
                         margin: auto;">
                 <div class="movie" ng-click="setMovie(movie)">
-                  <div class="poster" style="background-image: url('{{similar_movie.poster}}');" alt="{{similar_movie.title}}"></div>
+                  <div class="poster" style="background-image: url({{similar_movie.poster}});" alt="{{similar_movie.title}}"></div>
                   <h6 class="movie-title" style="color: rgba(255,255,255,0.5); margin-top: 10px;"
 
                   >{{similar_movie.title}}</h6>
