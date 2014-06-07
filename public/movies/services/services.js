@@ -4,12 +4,16 @@ angular.module('mean.movies').factory('Movies', ['$resource', '$location',
   function($resource, $location) {
   	 return {
       getMovies: $resource('/getMovies/:id', {id: '@id' }, {
-        query: { method: 'POST', params: {filter: '@filter'}, isArray: false }
+        query: { method: 'POST', params: {start: 'start', filter: '@filter'}, isArray: false }
       }),
       update: $resource('/updateMovies', {}, {
         query: { method: 'POST', params: {}, isArray: false }
       }),
-      getSpecialList: $resource('/getSpecialList/:type', {type : '@type'}, {})  
+      getSpecialList: $resource('/getSpecialList/:type', {type : '@type'}, {}) ,
+
+      synchronizeTrakt: $resource('/synchronizeTrakt', {}, {
+          query: { method: 'POST', params: {user: 'user', traktUser: 'traktUser', traktPassword: 'traktPassword'}, isArray: false }
+      }) 
     };
 }]).
 	factory('Users', ['$resource', '$location',
