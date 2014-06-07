@@ -44,21 +44,27 @@ table.main-wrapper > tbody {
 
 .movies-wrapper {
   height: 100%;
-  padding-top: 40px;
+  padding-top: 15px;
+  padding-left: 15px;
   overflow-y: auto;
   text-align: center;
 }
 
 .movies-wrapper h3 {
-  /*font-weight: initial;*/
-  font-size: 20px;
+  font-size: 30px;
   color: #fff;
   margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: lighter;
+}
+
+.movies-wrapper .row:first-child > div > .movie-group:first-child > h3 {
+  margin-left: 40px;
 }
 
 .movies-wrapper .movie-group-wrapper {
   /*margin-top: 40px;*/
-/*   text-align: left; */
+   text-align: left; 
 }
 
 .movies-wrapper .movie-group {
