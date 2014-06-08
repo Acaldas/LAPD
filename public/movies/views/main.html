@@ -118,8 +118,8 @@
         <div class="close-button-wrapper">
           <div class="close-button" onclick="$('#search-wrapper').hide()"></div>
         </div>
-        <input id="searchText" type="search" class="search" ng-model="searchText" name="Movie" placeholder="What is it?" />
-        <select ng-model="selectedFilterType" ng-options="filterType as filterType.name for filterType in filterTypes"></select>
+          <select id="filterSearch" ng-model="selectedFilterType" ng-options="filterType as filterType.name for filterType in filterTypes"></select>
+        <input id="searchText" type="search" class="search" ng-model="searchText" name="Movie" placeholder="What is it?" />        
       </div>
       <div class="search-results">
         <div class="movies">
