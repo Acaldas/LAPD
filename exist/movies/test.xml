@@ -2,4 +2,16 @@ xquery version "3.0";
 
 let $movies := doc('movies.xml')
  
-return $movies//movie[not(imdb)]/title
+let $schema := doc('movies.xsd')
+ 
+let $clear := validation:clear-grammar-cache()
+
+return
+    <DemoValidation timestamp="{current-dateTime()}" schema="{document-uri
+($schema)}">
+        <Validate uri="{document-uri($movies)}">
+        {
+            validation:validate-report($movies, $schema)
+        }
+        </Validate>
+    </DemoValidation>
