@@ -250,6 +250,7 @@
 			/*
 				type = 1, get Most Rated
 				type = 2, get Best Rated
+				type = 3, get Top movies by genre
 			*/
 			var query = "";
 			var type = req.params.type;
@@ -257,6 +258,8 @@
 				query = "getMostRated.xq";
 			else if(type == 2)
 				query = "getBestRated.xq";
+			else if(type == 3)
+				query = "getGenreMovies.xq"
 
 			var url = 'http://localhost:8080/exist/rest/db/apps/movies/' + query;
 

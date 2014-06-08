@@ -31,14 +31,17 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
 
     //$scope.getRecomendation("Teste3");
 
-    // Users.addUser.query({},{name: "Aaa", password: "bbb"}, function (response) {
-    //   console.log(response);
-    // });     
-  
-    // Users.addRating.query({},{user: "Teste", movie: 771250004, grade: 4}, function (response) {
-    //   console.log(response);
-    // });
-
+    $scope.addUser = function(name, password) {
+      Users.addUser.query({},{name: name, password: password}, function (response) {
+        console.log(response);
+      }); 
+    }
+        
+    $scope.addRating = function(user, movieId, grade) {
+    Users.addRating.query({},{user: user, movie: movieId, grade: grade}, function (response) {
+      console.log(response);
+    });
+  }
   
   $scope.quickMovie = null;
   $scope.showQuickMovie = false;
@@ -66,13 +69,17 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
       $scope.bestRatedMovies = response.best_rated.movie;
     });
 
+  //get top movies by genre
+  Movies.getSpecialList.get({},{'type': 3}, function (response){
+      $scope.bestGenreMovies = response.genres;
+    });
 
     $scope.filterTypes = [
      { id: 1, name: 'Everything' },
      { id: 2, name: 'Title' },
      { id: 3, name: 'Synopsis' },
      { id: 4, name: 'Actor' },
-     { id: 5, name: 'Director' },
+     { id: 5, name: 'Director' }
    ];
 
    $scope.selectedFilterType = $scope.filterTypes[0];
