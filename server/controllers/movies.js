@@ -209,12 +209,12 @@
 			var filter = req.body.filter;
 			var start = req.body.start;
 			var max = req.body.max;
-
+			var filterType = req.body.filterType;
 
 			url += '?max=' + max;
 
 			if(filter)
-				url += '&filter=' + filter;
+				url += '&filter=' + filter + '&filterType=' + filterType;
 
 			request.get(url, function (error, response, body) {
 				if(response.statusCode == 200){

@@ -66,13 +66,23 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
       $scope.bestRatedMovies = response.best_rated.movie;
     });
 
+
+    $scope.filterTypes = [
+     { id: 1, name: 'Everything' },
+     { id: 2, name: 'Title' },
+     { id: 3, name: 'Synopsis' },
+     { id: 4, name: 'Actor' },
+     { id: 5, name: 'Director' },
+   ];
+
+   $scope.selectedFilterType = $scope.filterTypes[0];
     var filterTextTimeout;
     var start = 1;
     var max = 20;
 
     var filter;
     $scope.getMovies = function () {
-      Movies.getMovies.query({},{start: start, filter: filter}, function (response){ 
+      Movies.getMovies.query({},{start: start, filter: filter, filterType: $scope.selectedFilterType.id}, function (response){ 
         if(response.movie) {//check if some movie was found 
           $scope.error = "";
           if(response.movie.length) //check if search returned various movies or only one
@@ -88,16 +98,15 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
 
     };
 
-    $scope.getMoreMovies = function () {
-      console.log("aaa");
-       start += 20;
-    };
-
     $scope.$watch('searchText', function (val) {
         if (filterTextTimeout) $timeout.cancel(filterTextTimeout);
         filter = val;
         filterTextTimeout = $timeout($scope.getMovies, 200); // delay 250 ms
     }); 
+
+     $scope.$watch('selectedFilterType', function(val) {
+      $scope.getMovies();
+     });
     
       // $scope.update = Movies.update.query(function(response) {
       // Movies.getMovies.query(function (response){ 
