@@ -13,7 +13,10 @@ angular.module('mean.movies').factory('Movies', ['$resource', '$location',
 
       synchronizeTrakt: $resource('/synchronizeTrakt', {}, {
           query: { method: 'POST', params: {user: 'user', traktUser: 'traktUser', traktPassword: 'traktPassword'}, isArray: false }
-      }) 
+      }),
+      getRecomendation: $resource('/getRecomendation',{}, {
+          query: { method: 'POST', params: {user: 'user'}, isArray: false }
+      })
     };
 }]).
 	factory('Users', ['$resource', '$location',

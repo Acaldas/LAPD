@@ -7,12 +7,181 @@
 		var apiKey = 'sqef2dd4hmsbfmh29b5bu7rf';
 		var traktApiKey = '15a5b7d3e016c4ea038f03a692565d2b';
 		var traktMovieLink = 'http://api.trakt.tv/movie/summary.json/' + traktApiKey + '/tt';
+		var traktDefaultUser = "Lapd";
+		var traktDefaultPassword = "lapd";
 		var existUsername = 'admin';
 		var existPassword = 'qweasd';
 		var request = require('request'); //https://github.com/mikeal/request
-		var original_movies_limit = 30;
-		var total_movies_limit = 200;
+		var original_movies_limit = 50;
+		var total_movies_limit = 1000;
 		var crypto = require('crypto');
+
+		var movies_links = [];
+		var movies_done = [];
+		var totalMovies = 0;
+		var moviesDone = 0;
+		var successMovies = 0;
+		var errorMovies = 0;
+
+		exports.updateMovies = function(req, res) {
+			request.get('http://api.rottentomatoes.com/api/public/v1.0/dvds/top_rentals.json?apikey=sqef2dd4hmsbfmh29b5bu7rf&imit=' + original_movies_limit,
+				function (error, response, body) {
+					
+					var response = JSON.parse(body); //remove \n from rottentomatoes API response
+			        	response.movies.forEach(function(movie) {
+			         	movies_links.push(movie.links.self);			        
+			         	totalMovies++;
+			         });
+
+			    movies_links.push('http://api.rottentomatoes.com/api/public/v1.0/movies/11176484.json'); //add Toy Story 3 (testar similar)
+				totalMovies++;
+
+				movies_links.forEach(function (link) {
+					getMovieInfo(link, 0);
+				});
+
+
+		  		res.send({status: "updating"}); // auto convert to object
+	  		});
+	    };
+
+	    var retries = 0;
+	    function getMovieInfo(link, generation) {    	
+	   //  	if((moviesDone % 50) == 0) {
+				// console.log(moviesDone+"\\"+totalMovies);
+	   //  	}
+	    	
+		 	request.get(link + '?apikey=' + apiKey, function (error, response, body) {
+		 			var movie = JSON.parse(body);
+		 			if(movie.error){	
+		 					retries++;
+							setTimeout(getMovieInfo(link), 5000);																	
+					} else 
+			 			getSynopsis(movie, function (movie) {
+			 				getSimilarMovies(movie, function (movie){
+			 					sendMovieToServer(movie);
+			 					moviesDone++;
+			 					if(movie.similar && generation<5)
+			 						movie.similar.forEach(function (similar){			 							
+			 							var similar_link = 'http://api.rottentomatoes.com/api/public/v1.0/movies/' + similar.id + '.json';
+			 							if(!containsMovie(similar_link)) {
+			 								movies_links.push(similar_link);
+			 								getMovieInfo(link, generation+1);
+			 								totalMovies++;
+			 							}			 							
+			 						});
+			 					
+
+			 				});
+			 			});
+			 	});
+		}	
+
+		 function sendMovieToServer(movie) {
+		 	var xml_options = {
+					wrapArray: {
+						enabled: true,
+						elementName: 'movie'
+					},
+					declaration : {
+						include: false
+					}
+				};
+
+				var movie_xml = js2xmlparser("movie", movie, xml_options); //convert movie to xml
+
+				var url = 'http://localhost:8080/exist/rest/db/apps/movies/addMovie.xq';
+
+				request.post(url, {form:{query: movie_xml}}, function (error, response, body) { //send to server									
+											if(response.statusCode == 200){
+												successMovies += 1;
+												console.log(successMovies+"/"+totalMovies + "  similar: " + movie.similar.length);
+												console.log("Retries: " + retries);
+											} else {
+												errorMovies += 1
+												//console.log("Error adding " + movie.title);
+											}
+
+										}).auth(existUsername, existPassword, true);
+
+		 }
+
+		 function getSynopsis(movie, callback) {
+		 	if(!movie.synopsis) {
+		 		var alternate_ids = movie.alternate_ids;
+		 		if(alternate_ids) {
+			 		request.get(traktMovieLink + alternate_ids.imdb, function (error, response, body) {
+			 			if(response.statusCode == 200) {
+			 				var synopsis = JSON.parse(body).overview;
+			 				movie.synopsis = synopsis;
+			 			}
+			 			else
+			 				console.log('Error getting synopsis for ' + movie.title);
+
+			 			callback(movie);
+			 		});
+			 	} else {
+			 		console.log(movie.title + ' - No IMDB ID');
+			 		callback(movie)
+			 	}
+		 	} else
+		 		callback(movie);
+		 }
+
+
+		function getSimilarMovies(movie, callback) {
+
+		 	request.get(movie.links.similar + '?apikey=' + apiKey, function (error, response, body) {
+				var similar_movies = JSON.parse(body);
+		 		if(similar_movies.error){
+		 					retries++;
+							setTimeout(function() {
+						    getSimilarMovies(movie,callback)
+						}, 10000);													
+					} else {	 	
+
+		 			var similar = [];		 			
+			 		similar_movies.movies.forEach(function(similar_movie) {
+
+			 			similar.push({
+			 				id: similar_movie.id,
+			 				title: similar_movie.title,
+			 				poster: similar_movie.posters.detailed
+			 			});
+			 						 		 
+			 		});
+			 		movie.similar = similar;
+			 		callback(movie);
+			 		}		
+			 	});
+		 };
+
+		 function containsMovie(movie) {
+		    var i = null;
+		    for (i = 0; movies_links.length > i; i += 1) {
+		        if (movies_links[i] === movie) {
+		            return true;
+		        }
+		    }
+
+		     for (i = 0; movies_done.length > i; i += 1) {
+		        if (movies_done[i] === movie) {
+		            return true;
+		        }
+		    }	     
+		    return false;
+		};
+
+		function deleteMovie(movie) {
+		    var i = null;
+		    for (i = 0; movies_links.length > i; i += 1) {
+		        if (movies_links[i] === movie) {
+		        	movies_done.splice(i, 1);
+		            return true;
+		        }
+		    }	     
+		    return false;
+		};
 
 		exports.getMovie = function(req, res) {
 			var xpath = { _query: '//movie[id=' + req.params.id + ']',
@@ -76,192 +245,6 @@
 			});		
 		};
 
-		exports.updateMovies = function(req, res) {
-			request.get('http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=' + apiKey
-						 + '&?callback=JSON_CALLBACK&country=pt&limit=' + original_movies_limit,
-				function (error, response, body) {
-					
-					var response = JSON.parse(body); //remove \n from rottentomatoes API response
-			        response.movies.forEach(function(movie) {
-			        	movies_links.push(movie.links.self);
-			        	totalMovies++;
-			        });
-
-			    movies_links.push('http://api.rottentomatoes.com/api/public/v1.0/movies/770672122.json'); //add Toy Story 3 (testar similar)
-				totalMovies++;
-				getMovieSet(0,null);
-				start = new Date().getTime() / 1000;
-		  		res.send(response.movies); // auto convert to object
-	  		});
-	    };
-
-	    var movies_set = []
-		var movies_links = [];
-		var totalMovies = 0;
-		var errors = 0;
-	    var start;
-	    var synopsisMissing = 0;
-
-	    function resetVars() {
-	    	movies_links = [];
-	    	movies_set = [];
-			totalMovies = 0;
-			errors = 0;
-			start = 0;
-			synopsisMissing = 0;
-	    }
-
-		function getMovieSet(n, movie) {
-			if(movie != null) {
-				movies_set.push(movie);
-				n += 1;
-				if((n % 50) == 0)
-				 console.log(n+"\\"+totalMovies + " :" + movie.title);
-			}
-			if(n < movies_links.length ) {
-				getMovieInfo(n);	
-
-		 	} else { //já tem todos os filmes
-				
-				var end = new Date().getTime() / 1000;
-
-				console.log(" Done in " + (end - start) + " seconds." + n + '/' + movies_links.length);
-
-				console.log("Movies_links: " + movies_links.length);
-				console.log("totalMovies: " + totalMovies);
-			    console.log("errors: " + errors);
-			    console.log("done: " + n);
-				
-				var xml_options = {
-					wrapArray: {
-						enabled: true,
-						elementName: 'movie'
-					}
-				};
-
-				var movies_xml = js2xmlparser("movies", JSON.stringify(movies_set), xml_options);
-				
-				resetVars();
-
-				fs.writeFile("./server/assets/movies/movies.xml",movies_xml, function(err) {
-					if(err) {
-						console.log(err);
-						return;
-					}
-
-					//envial movies.xml para exist-db
-					fs.createReadStream("./server/assets/movies/movies.xml").pipe(request.put('http://localhost:8080/exist/rest/apps/movies/movies.xml', 
-						function (error, response, body) {
-							if(response.statusCode == 201){
-								console.log('Movies stored.');
-
-								//transform movies with xslt
-								request.get('http://localhost:8080/exist/rest/db/apps/movies/transformMovies.xml', function (error, response, body) {
-									if(response.statusCode == 200){
-											console.log('Movies transformed.');
-										} else {
-											console.log('error: '+ response.statusCode);
-											console.log(body);
-										}
-								}).auth(existUsername, existPassword, true);
-				} else {
-							console.log('error: '+ response.statusCode);
-							console.log(body);
-						}
-						}).auth(existUsername, existPassword, true));
-
-		 		resetVars();
-		 	});
-		 }
-		};
-
-		 function getMovieInfo(n) {
-		 	request.get(movies_links[n] + '?apikey=' + apiKey, function (error, response, body) {
-		 			var movie = JSON.parse(body);
-		 			if(movie.error){
-							errors++;
-							console.log("Error getting " + movie_links[n]);
-					} else 
-			 			getExtraInfo(0,n,movie);
-			 	});
-		 };
-
-		 function getExtraInfo(step, n, movie) {
-		 	switch(step) {
-		 		case 0:
-		 			getSimilarMovies(n, movie);	 			
-		 			break;
-		 		case 1: 
-		 				getSynopsis(n, movie);	 
-		 			break;
-		 		case 2:
-		 			getMovieSet(n,movie);
-		 			break;	 		
-		 	}
-		 	//TODO adicionar outras infos, como trailers,etc
-		 };
-
-		 function getSynopsis(n, movie) {
-		 	if(!movie.synopsis) {
-		 		synopsisMissing++;
-		 		var alternate_ids = movie.alternate_ids;
-		 		if(alternate_ids) {
-			 		request.get(traktMovieLink + alternate_ids.imdb, function (error, response, body) {
-			 			if(response.statusCode == 200) {
-			 				var synopsis = JSON.parse(body).overview;
-			 				movie.synopsis = synopsis;
-			 				if(synopsis)
-			 					synopsisMissing--;
-			 			}
-			 			else
-			 				console.log('Error getting synopsis for ' + movie.title);
-
-			 			getExtraInfo(2, n, movie);
-			 		});
-			 	} else {
-			 		console.log(movie.title + ' - No IMDB ID');
-			 		getExtraInfo(2, n, movie);
-			 	}
-		 	} else
-		 		getExtraInfo(2, n, movie);
-		 }
-
-		 function getSimilarMovies(n, movie) {
-		 	request.get(movie.links.similar + '?apikey=' + apiKey, function (error, response, body) {
-				var similar_movies = JSON.parse(body);
-		 		if(similar_movies.error){
-							errors++;
-							console.log("Error getting similar" + movie.links.similar);
-					} else {	 		
-		 			var similar = [];
-			 		similar_movies.movies.forEach(function(similar_movie) {
-			 			similar.push({
-			 				id: similar_movie.id,
-			 				title: similar_movie.title,
-			 				poster: similar_movie.posters.detailed
-			 			});
-			 			var similar_link = 'http://api.rottentomatoes.com/api/public/v1.0/movies/' + similar_movie.id + '.json';
-			 			if(!containsMovie(similar_link) && totalMovies < total_movies_limit) {
-			 				movies_links.push(similar_link);	
-			 				//console.log("Added similar movie: " + similar_movie.title);
-			 				totalMovies++;
-			 			}
-			 		});
-			 		movie.similar = similar;
-			 		getExtraInfo(1, n, movie);
-			 		}		
-			 	});
-		 };
-
-		 function containsMovie(movie) {
-		    var i = null;
-		    for (i = 0; movies_links.length > i; i += 1) {
-		        if (movies_links[i] === movie) {
-		            return true;
-		        }
-		    }	     
-		    return false;
-		};
 
 		exports.getSpecialList  = function( req, res) {
 			/*
@@ -302,22 +285,12 @@
 			var password = body.traktPassword;
 
 			if(user != null && traktUser != null && password != null) {
-				password = crypto.createHash('sha1').update(password, 'utf8').digest('hex');
-				getTraktRatings(user, traktUser, password, res);
+				var traktPassword = crypto.createHash('sha1').update(password, 'utf8').digest('hex');
 
-			}
-		}
 
-		function getTraktRatings(user, traktUser, traktPassword, res) {
+				getTraktRatings(traktUser, traktPassword, function(result) { //get trakt ratings
 
-			var url = 'http://api.trakt.tv/user/ratings/movies.json/' + traktApiKey;
-
-			url += '/' + traktUser;
-
-			request.get(url, function (error, response, body) { //get trakt.tv ratings
-				if(response.statusCode == 200){
-					var traktRatings = JSON.parse(body);
-
+					var traktRatings = result;
 					var ratings = '<ratings>';
 					traktRatings.forEach(function (traktRating){
 						ratings += '<rating>';
@@ -332,14 +305,111 @@
 					var date = new Date();
 					var dateString = date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
 
+					//add them to our database
 			request.post(url, {form:{user: user, traktuser: traktUser, traktpassword: traktPassword, date:dateString, query: ratings}} ,function (error, response, body) {  //get our ids for trakt.tv rating
+				if(response.statusCode == 200){
+
+					xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+						 if (err) { 
+						 	res.send(err);
+						  } else {
+						  	res.send(result);
+						  }
+					});																			
+					} else {
+						console.log('error: '+ response.statusCode);
+						res.send(body);
+					}
+			}).auth(existUsername, existPassword, true);					
+				});
+
+			}
+		} 
+
+		//gets trakt ratings and adds them to our database, returns trakt ratings added
+		function getTraktRatings(traktUser, traktPassword, returnRequest) {
+
+			var url = 'http://api.trakt.tv/user/ratings/movies.json/' + traktApiKey;
+
+			url += '/' + traktUser;
+
+			request.get(url, function (error, response, body) { //get trakt.tv ratings
+				if(response.statusCode == 200){
+					var traktRatings = JSON.parse(body);
+					returnRequest(traktRatings);
+					} else {
+						returnRequest(body);
+					}
+			});			
+		}
+
+
+		exports.getRecomendation = function( req, res) {
+
+			var username = req.body.user;
+			var url = 'http://localhost:8080/exist/rest/db/apps/movies/getUserRatings.xq?user=' + username;
+
+			request.get(url, function (error, response, body) { //get user ratings
 				if(response.statusCode == 200){
 
 					xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
 						 if (err) { 
 						    console.log(err);
 						  } else {
-						    res.send(result);
+						  	var user = result.user;
+						  	var traktUser = traktDefaultUser;
+						  	var traktPassword = crypto.createHash('sha1').update(traktDefaultPassword, 'utf8').digest('hex');
+						  	if(!user) {
+						  		res.send({Error: "Error"});
+						  		return;
+						  	} else if(user.traktUser && user.traktPassword) {	//if user exists and has a recorded trakt account, use it
+						  		traktUser = user.traktUser;
+						  		traktPassword = user.traktPassword;
+						  	}
+
+						  	getTraktWatched(traktUser, traktPassword, function (result){ //get existing trakt ratings
+
+						  		var traktWatched = result;
+
+						  		sendTraktWatched(traktWatched, true, traktUser, traktPassword, function (result){ //clean existing trakt ratings
+
+						  			sendTraktWatched(user.rating, false, traktUser, traktPassword, function (result){ //insert our ratings in trakt
+
+						  				var auth = {username: traktUser, password: traktPassword};
+						  				var getRecomendationUrl = 'http://api.trakt.tv/recommendations/movies/' + traktApiKey;
+
+						  				request.post(getRecomendationUrl, function (error, response, body){ //get recomendations from trakt
+						  					var recommendations = JSON.parse(body);
+						  					var getMovies = '<movies>';
+						  					recommendations.forEach(function(movie){	
+						  						var movieXml = '<movie><imdb>' + movie.imdb_id.substring(2) + '</imdb></movie>';
+						  						getMovies += movieXml;
+						  					});
+						  					getMovies += '</movies>';
+
+						  					var getMoviesUrl = 'http://localhost:8080/exist/rest/db/apps/movies/getImdbMovies.xq';
+
+										request.post(getMoviesUrl, {form: {query: getMovies}}, function (error, response, body) { //get user ratings											
+											if(response.statusCode == 200){
+
+												xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+													 if (err) { 
+													    console.log(err);
+													    res.send({error: "Error"});
+													  } else {
+													  	res.send(result.movies);
+													  }})
+											} else
+												res.send({error: "Error"});
+										}).auth(existUsername, existPassword, true);
+
+									}).auth(traktUser,traktPassword);
+						  				
+						  			});
+						  		});						  		
+						  		
+						  	});					    	
+						  	
 						  }
 					});																			
 					} else {
@@ -347,10 +417,58 @@
 						console.log(body);
 					}
 			}).auth(existUsername, existPassword, true);
+		};
 
+		//sends ratings to trakt, if unrate deletes them
+		function sendTraktWatched(ratings, unseen, traktUser, traktPassword, callback) {
+			var rateMoviesUrl = ''
+			var traktRatings = [];			
+			if(!ratings) {
+				callback(null);
+				return;
+			}
+			
+			if(unseen)
+				rateMoviesUrl = 'http://api.trakt.tv/movie/unseen/' + traktApiKey;
+			else 
+				rateMoviesUrl = 'http://api.trakt.tv/movie/seen/' + traktApiKey;
+			
+
+
+			ratings = [].concat( ratings );
+			ratings.forEach(function (rating) {
+				var traktRating = {};
+		
+				traktRating.title = rating.title;
+				traktRating.year = rating.year;	
+				
+				if(unseen)
+					traktRating.imdb_id = rating.imdb_id;
+				else
+					traktRating.imdb_id = 'tt' + rating.imdb;
+
+				traktRatings.push(traktRating);
+			});
+
+			var body = {username: traktUser, password: traktPassword, movies: traktRatings};
+			request.post({url: rateMoviesUrl, form: body }  ,function (error, response, body) { //clean trakt ratings	
+							callback(body);
+						});
+		}
+
+		//gets trakt watched list
+		function getTraktWatched(traktUser, traktPassword, callback) {
+
+			var url = 'http://api.trakt.tv/user/library/movies/watched.json/' + traktApiKey;
+
+			url += '/' + traktUser;
+
+			request.get(url, function (error, response, body) { //get trakt.tv ratings
+				if(response.statusCode == 200){
+					var traktWatched = JSON.parse(body);
+					callback(traktWatched);
 					} else {
-						console.log('error: '+ response.statusCode);
-						console.log(body);
+						returnRequest(body);
 					}
 			});			
 		}

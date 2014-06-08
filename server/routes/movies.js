@@ -8,4 +8,5 @@ module.exports = function (app) {
   app.post('/updateMovies', Movies.updateMovies);
   app.get('/getSpecialList/:type', Movies.getSpecialList);
   app.post('/synchronizeTrakt', Movies.synchronizeTrakt);
+  app.post('/getRecomendation', Movies.getRecomendation);
 };

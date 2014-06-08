@@ -11,13 +11,26 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     };
 
 
+    //returns movie ratings returned from Trakt
     $scope.synchronizeTrakt = function(user, traktUser, traktPassword) {
       Movies.synchronizeTrakt.query({},{user: user, traktUser: traktUser, traktPassword: traktPassword}, function (response){ 
         console.log(response);
       });
     }
 
-    $scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
+    //synchronize ratings
+    //$scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
+
+
+    //get recomendation
+    $scope.getRecomendation = function(user) {
+      Movies.getRecomendation.query({},{user: user}, function (response){ 
+        console.log(response);
+      });
+    }
+
+    //$scope.getRecomendation("Teste3");
+
     // Users.addUser.query({},{name: "Aaa", password: "bbb"}, function (response) {
     //   console.log(response);
     // });     
@@ -85,11 +98,12 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
         filter = val;
         filterTextTimeout = $timeout($scope.getMovies, 200); // delay 250 ms
     }); 
+    
       // $scope.update = Movies.update.query(function(response) {
       // Movies.getMovies.query(function (response){ 
-      //    $scope.movies = response.movie;
-      //  });
-      //  }); //get movies
+      //     $scope.movies = response.movie;
+      //   });
+      //   }); //get movies
   }
 ])
 .controller('MovieController', ['$scope', '$location', '$stateParams', 'Movies', function($scope, $location, $stateParams, Movies) {
