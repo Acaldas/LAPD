@@ -2,14 +2,12 @@
   <div id="register-wrapper" style="display: none">
     <div id="register-form">
       <h3>NEW ACCOUNT</h3>
-      <input type="text" name="username" placeholder="Username" style="margin-bottom: 16px; margin-top: 10px;"/>
-      <input type="text" name="email" placeholder="Email address" style="width: 200px;"/>
-      <input type="text" name="emailconf" placeholder="Email address confirmation" style="width: 200px; margin-bottom: 12px;"/>
-      <input type="password" name="password" placeholder="Password" style="width: 180px;margin-bottom: 20px"/>
+      <input ng-model="registerusername" type="text" name="username" placeholder="Username" style="margin-bottom: 16px; margin-top: 10px;"/>
+      <input ng-model="registerpassword"  type="password" name="password" placeholder="Password" style="width: 180px;margin-bottom: 20px"/>
       <h6><strong>Sync Trakt account (optional):</strong></h6>
       <input type="text" name="traktemail" placeholder="Trakt username" style="width: 200px; margin-bottom: 12px;"/>
       <input type="password" name="traktpass" placeholder="Trakt password" style="width: 180px;"/>
-      <p class="register-button">REGISTER</p>
+      <p class="register-button" ng-click="addUser(registerusername, registerpassword)">REGISTER</p>
     </div>
   </div>
   <script>
@@ -25,7 +23,7 @@
       <td class="left-wrapper">
         <div class="side-menu">
           <div class="items">
-            <h4 class="menu-item tooltips" onclick="$('#search-wrapper').show()" onmouseenter="closePopups()">
+            <h4 class="menu-item tooltips" onclick="$('#search-wrapper').show()">
               <span class="glyphicon glyphicon-search" style="
                 font-size: 21px;"></span>
               <span class="tooltip">
@@ -40,7 +38,14 @@
               <p>Watched</p>
             </span>
             <span class="tooltip watched hidden expanded">
-              <div class="tooltip-content-wrapper" onmouseout="closePopup(this)"></div>
+              <div class="tooltip-content-wrapper">
+                <div class="sidebar-expanded-placeholder" ng-show="!logged">Login First!</div>
+                <div class="sidebar-movie-list">
+                  <div ng-show="logged" ng-repeat="movie in recomendation_movies" class="movie" ng-click="setMovie(movie)">
+                    <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
+                  </div>
+                </div>
+              </div>
             </span>
             </h4>
             <h4 class="menu-item tooltips" onclick="leftPopup(this)" onmouseenter="closePopups()">
@@ -51,7 +56,14 @@
               <p>Suggestions</p>
             </span>
             <span class="tooltip hidden suggestions expanded">
-              <div class="tooltip-content-wrapper" onmouseout="closePopup(this)"></div>
+              <div class="tooltip-content-wrapper">
+                <div class="sidebar-expanded-placeholder" ng-show="!logged">Login First!</div>
+                <div class="sidebar-movie-list">
+                  <div ng-show="logged" ng-repeat="movie in recomendation_movies" class="movie" ng-click="setMovie(movie)">
+                    <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
+                  </div>
+                </div>
+              </div>
             </span>
             </h4>
           </div>
@@ -113,11 +125,16 @@
       <td class="right-wrapper">
         <div class="right-side-bar">
           <div class="right-side-bar-content">
-            <div class="header">
-              <input type="text" name="username" placeholder="Username" />
-              <input type="password" name="password" placeholder="Password" />
-              <p id="login-button">LOGIN</p>
+            <div class="header login-form" ng-show="!logged">
+              <input ng-model="loginusername" type="text" name="username" placeholder="Username" />
+              <input ng-model="loginpassword" type="password" name="password" placeholder="Password" />
+              <p id="login-button" ng-click="login(loginusername, loginpassword)">LOGIN</p>
               <p id="new-account-button">REGISTER</p>
+            </div>
+            <div class="header user-area" ng-show="logged">
+              <p class="user">Welcome {{user.user}}</p>
+              <p id="logout-button" ng-click="logout()">Logout</p>
+              <p id="trakt-button">Trakt</p>
             </div>
             <h5>Our Suggestions</h5>
             <table class="suggested-movies">
@@ -179,10 +196,41 @@
       <!--<h4>{{movie.title}}</h4>-->
       <div class="poster big" style="background-image: url({{quickMovie.poster}});" alt="{{quickMovie.title}}" ng-click="setMovie(quickMovie)"></div>
     </div>
+    
+    
+    <table style="width: 100%">
+      <tr>
+        <td>
+          <div class="score">
+            <div ng-if="quickMovie.ratings.critics_score > 50">
+              <img src="public/movies/assets/images/fresh-tomatoe.png" width="25px"></img>
+              {{quickMovie.ratings.critics_score}}/100
+            </div>
+            <div ng-if="quickMovie.ratings.critics_score < 50">
+              <img src="public/movies/assets/images/rotten-tomatoe.png" width="25px"></img>
+              {{quickMovie.ratings.critics_score}}/100
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="external"><br><br>
+            <a href="http://www.imdb.com/title/tt{{quickMovie.imdb}}">
+            <img src="public/movies/assets/images/imdb-logo.png" width="40px"></img>
+          </a>
+            <a href="{{quickMovie.links.alternate}}">
+              <img src="public/movies/assets/images/rotten-logo.png" width="75px"></img>
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  
     <p>
       {{quickMovie.synopsis}}
     </p>
+
     <h4 ng-show="quick_similar_movies">Similar movies</h4>
+
     <table class="similar-movies">
       <tr>
         <td ng-repeat="similar_movie in quick_similar_movies" class="movie" ng-click="setMovie(similar_movie)">
@@ -193,4 +241,5 @@
       </tr>
     </table>
   </div>
+    </div>
 </section>

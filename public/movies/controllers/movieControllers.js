@@ -31,7 +31,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     }
 
     //synchronize ratings
-    //$scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
+    $scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
 
     //get recomendation
     $scope.getRecomendation = function(user) {
@@ -39,17 +39,26 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
         $scope.recomendation_movies = response.movie;
       });
     }
-
     //$scope.getRecomendation("Teste1");
 
     $scope.login = function(name, password) {
       Users.login.query({},{name: name, password: password}, function (response) {
         console.log(response);
         $scope.status = response.status;
-        if($scope.status === "Success")
+        if($scope.status === "Success") {
           $scope.user = {user: name, password: password};
+          $scope.logged = true;
+          $scope.getRecomendation(name);
+        }
       });
     }
+
+    $scope.logout = function() {
+      $scope.user = "";
+      $scope.logged = false;
+    }
+
+    //$scope.login("Teste1", "teste");
 
     $scope.addUser = function(name, password) {
       Users.addUser.query({},{name: name, password: password}, function (response) {
@@ -65,6 +74,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
   
   $scope.quickMovie = null;
   $scope.showQuickMovie = false;
+  $scope.logged = false;
 
   //set quick description movie
   $scope.setQuickMovie = function(movie){ 

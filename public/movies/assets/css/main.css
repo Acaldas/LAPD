@@ -255,7 +255,9 @@ table.main-wrapper > tbody {
 }
 
 #new-account-button,
-#login-button {
+#login-button,
+#logout-button,
+#trakt-button {
   display: inline-block;
   margin-top: 7px;
   margin-right: 5px;
@@ -278,6 +280,28 @@ table.main-wrapper > tbody {
 .header > #new-account-button {
   color: rgba(255, 255, 255, 0.5);
   font-style: italic;
+}
+
+.header > #logout-button {
+  margin-left: 10px;
+}
+
+.header > #trakt-button {
+  background: rgba(0, 180, 159, 0.44);
+}
+
+.header.user-area {
+  text-align: center;
+  padding: 0px;
+  padding-top: 10px;
+}
+
+.header.user-area > .user {
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: underline;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .header > * {
@@ -438,7 +462,7 @@ table.main-wrapper > tbody {
 	position: fixed;
   height: 100%;
   width: 304px;
-  background: rgba(24, 24, 24, 0.96) url(../../../movies/assets/images/bg-noise-pattern.png);
+  background: rgba(0,0,0,0.8);
   box-shadow: 0 0 1px rgba(255, 255, 255, 0.27);
   border-left: 1px solid rgba(148, 148, 148, 0.06);
   top: 0;
@@ -447,6 +471,8 @@ table.main-wrapper > tbody {
   padding-left: 18px;
   padding-right: 18px;
   text-align: center;
+
+  
 }
 
 #quick-movie-description h3 {
@@ -519,9 +545,12 @@ table.main-wrapper > tbody {
   width: 340px;
   height: 85%;
   margin-top: -135px;
+
 }
 .tooltips span.tooltip.expanded.suggestions {
   margin-top: -189px;
+  opacity: 1;
+  background-color: rgba(0,0,0,0.8);
 }
 .tooltips span.tooltip.expanded:before {
   margin-left: -178px;
@@ -533,6 +562,7 @@ table.main-wrapper > tbody {
 .tooltips span.tooltip.expanded > .tooltip-content-wrapper {
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 .tooltips span.tooltip.expanded > .tooltip-content-wrapper:before {
   content: '';
@@ -586,6 +616,15 @@ table.main-wrapper > tbody {
 }
 .tooltips:hover span.tooltip:hover:after {
 	border-right: 10px solid #111111;
+}
+
+.sidebar-expanded-placeholder {
+  top: 45%;
+  position: relative;
+}
+
+.sidebar-movie-list {
+  padding-top: 30px;
 }
 
 div.movie-options {
