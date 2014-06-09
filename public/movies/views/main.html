@@ -43,7 +43,21 @@
                 <div class="sidebar-expanded-placeholder" ng-show="!logged">Login First!</div>
                 <div class="sidebar-movie-list">
                   <div ng-show="logged" ng-repeat="movie in watched_list" class="movie" ng-click="setMovie(movie)">
-                    <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>                     
+                    <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}">
+                      <div class="movie-options">
+                        <div class="rate-movie">                      
+                          <span ng-if="movie.grade >= 1" class="glyphicon glyphicon-star checked"></span>
+                          <span ng-if="movie.grade < 1" class="glyphicon glyphicon-star"></span> 
+                          <span ng-if="movie.grade >= 2" class="glyphicon glyphicon-star checked"></span>
+                          <span ng-if="movie.grade < 2" class="glyphicon glyphicon-star"></span>  
+                          <span ng-if="movie.grade >= 3" class="glyphicon glyphicon-star checked"></span> 
+                          <span ng-if="movie.grade < 3" class="glyphicon glyphicon-star"></span> 
+                          <span ng-if="movie.grade >= 4" class="glyphicon glyphicon-star checked"></span> 
+                          <span ng-if="movie.grade < 4" class="glyphicon glyphicon-star"></span> 
+                          <span ng-if="movie.grade >= 5" class="glyphicon glyphicon-star checked"></span>
+                          <span ng-if="movie.grade < 5" class="glyphicon glyphicon-star"></span>                                                
+                        </div>
+                    </div>                     
                   </div>
                 </div>
               </div>
@@ -61,7 +75,18 @@
                 <div class="sidebar-expanded-placeholder" ng-show="!logged">Login First!</div>
                 <div class="sidebar-movie-list">
                   <div ng-show="logged" ng-repeat="movie in recomendation_movies" class="movie" ng-click="setQuickMovie(movie)">
-                    <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
+                    <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}">
+                      <div class="movie-options">
+                        <div class="rate-movie">
+                          <span class="glyphicon glyphicon-star checked"></span>
+                          <span class="glyphicon glyphicon-star checked"></span>
+                          <span class="glyphicon glyphicon-star checked"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                        </div>
+                        <!-- <div class="options-buttons"></div> -->
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -97,6 +122,16 @@
             <div ng-if="movie.poster" ng-repeat="movie in mostRatedMovies" class="movie" ng-click="setQuickMovie(movie)">
               <!--<h4>{{movie.title}}</h4>-->
               <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
+              <div class="movie-options">
+                <div class="rate-movie">
+                  <span class="glyphicon glyphicon-star checked"></span>
+                  <span class="glyphicon glyphicon-star checked"></span>
+                  <span class="glyphicon glyphicon-star checked"></span>
+                  <span class="glyphicon glyphicon-star"></span>
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <!-- <div class="options-buttons"></div> -->
+              </div>
             </div>
           </div>
           <div class="movie-group" ng-show="genreFiltered">
@@ -198,14 +233,25 @@
     <table style="width: 100%">
       <tr>
         <td>
-          <div class="score">
+          <div ng-if="quickMovie.ratings.critics_score > -1" class="score">
             <div ng-if="quickMovie.ratings.critics_score > 50">
               <img src="public/movies/assets/images/fresh-tomatoe.png" width="25px"></img>
               {{quickMovie.ratings.critics_score}}/100
             </div>
-            <div ng-if="quickMovie.ratings.critics_score < 50">
+            <div ng-if="quickMovie.ratings.critics_score <= 50 ">
               <img src="public/movies/assets/images/rotten-tomatoe.png" width="25px"></img>
               {{quickMovie.ratings.critics_score}}/100
+            </div>
+            </div>
+            <div ng-if="quickMovie.ratings.critics_score < 0" class="score">
+            <div ng-if="quickMovie.ratings.audience_score > 50">
+            <img src="public/movies/assets/images/fresh-tomatoe.png" width="25px"></img>
+              {{quickMovie.ratings.audience_score}}/100
+            </div>
+
+            <div ng-if="quickMovie.ratings.audience_score <= 50">
+            <img src="public/movies/assets/images/rotten-tomatoe.png" width="25px"></img>
+              {{quickMovie.ratings.audience_score}}/100
             </div>
           </div>
         </td>

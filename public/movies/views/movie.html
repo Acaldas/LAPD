@@ -66,9 +66,13 @@
 		              	<img src="public/movies/assets/images/fresh-tomatoe.png" width="25px"></img>
 		              	{{movie.ratings.critics_score}}/100
 		              </div>
-		              <div ng-if="movie.ratings.critics_score < 50">
+		              <div ng-if="movie.ratings.critics_score < 50 && movie.ratings.critics_score > -1">
 		              	<img src="public/movies/assets/images/rotten-tomatoe.png" width="25px"></img>
 		              	{{movie.ratings.critics_score}}/100
+		              </div>
+		              
+		              <div ng-if="movie.ratings.critics_score == -1">
+		              	No rating available!
 		              </div>
 	              </div>
 	              
