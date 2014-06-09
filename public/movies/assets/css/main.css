@@ -33,7 +33,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  background-image: url('../images/background5.png');
+  background: #1a1a1a url(../../../movies/assets/images/bg.png) center top no-repeat;
 }
 
 table.main-wrapper > tbody {
@@ -44,22 +44,22 @@ table.main-wrapper > tbody {
 
 .movies-wrapper {
   height: 100%;
-  padding-top: 15px;
-  padding-left: 15px;
+  /*padding-left: 15px;*/
   overflow-y: auto;
   text-align: center;
 }
 
 .movies-wrapper h3 {
-  font-size: 30px;
-  color: #fff;
+  font-size: 15px;
+  color: rgba(255,255,255,0.85);
   margin-bottom: 20px;
   text-transform: uppercase;
-  font-weight: lighter;
+  margin-left: 10px;
+  font-weight: bold;
 }
 
 .movies-wrapper .row:first-child > div > .movie-group:first-child > h3 {
-  margin-left: 40px;
+  margin-left: 45px;
 }
 
 .movies-wrapper .movie-group-wrapper {
@@ -68,21 +68,25 @@ table.main-wrapper > tbody {
 }
 
 .movies-wrapper .movie-group {
-  padding: 10px;
-/*
-  padding-right: 10px;
-  padding-left: 10px;
-*/
+  margin: 20px;
+  margin-top: 25px;
+  margin-left: 30px;
+  margin-bottom: 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  text-align: left;
 }
 
 .movies-wrapper .movie {
   margin-left: 0;
   margin-right: 0;
+  margin-bottom: 0;
+  position: relative;
 }
 
 .right-wrapper {
   width: 300px;
-  background: rgba(34,34,34,0.75) url(../../../movies/assets/images/bg-noise-pattern.png);
+  background-image: url(../../../movies/assets/images/bg-noise-pattern.png);
 }
 
 .left-wrapper {
@@ -91,8 +95,8 @@ table.main-wrapper > tbody {
 
 .side-menu {
   height: 100%;
-  overflow-y: auto;
-  background: rgba(34,34,34,0.75) url(../../../movies/assets/images/bg-noise-pattern.png);
+  overflow: hidden;
+  background: url(../../../movies/assets/images/bg-noise-pattern.png);
 }
 
 .right-side-bar {
@@ -104,14 +108,13 @@ table.main-wrapper > tbody {
 .right-side-bar-content {
   padding: 0px;
   text-align: center;
-  padding-bottom: 50px;
-  padding-top: 20px;
 }
 
 .right-side-bar::before {
   content: " ";
   display: block;
   height: 100%;
+  opacity: 0.5;
   width: 2px;
   position: absolute;
   background: url('../images/bg-border-left.png') left repeat-y;
@@ -142,7 +145,7 @@ table.main-wrapper > tbody {
   color: #999;
   border-right: 2px solid transparent;
 
-  -webkit-transition: all 0.3s ease-out;  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */
+  -webkit-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
 }
 
@@ -176,6 +179,8 @@ table.main-wrapper > tbody {
   margin-bottom: 20px;
   margin-top: 30px;
   color: #d5d5d5;
+  font-size: 13px;
+  text-transform: uppercase;
 }
 
 .right-side-bar .movie {
@@ -213,22 +218,23 @@ table.main-wrapper > tbody {
     color: #000000;
 }
 
-.header-wrapper {
-  height: 0;
-  overflow: visible;
-  z-index: 10;
-  position: relative;
-}
-
 .header {
-  height: 45px;
   padding: 15px;
-  padding-top: 3px;
+  padding-top: 45px;
+  padding-bottom: 0;
   z-index: 10;
+  text-align: right;
   /*background: url(../../../movies/assets/images/bg-fade-top.png) left top repeat-x;
   background-size: 1px 100%;*/
-  background: #222222 url(../../../movies/assets/images/bg-noise-pattern.png);
   /*background: rgba(28, 28, 28, 0.95);*/
+}
+
+.right-wrapper .header {
+  text-align: left;
+  padding-top: 25px;
+  padding-left: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .logo-wrapper {
@@ -248,16 +254,73 @@ table.main-wrapper > tbody {
   cursor: pointer;
 }
 
+#new-account-button,
+#login-button {
+  display: inline-block;
+  margin-top: 7px;
+  margin-right: 5px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.64);
+  padding: 15px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  /* border: 1px solid rgba(216, 181, 42, 0.41); */
+  border-radius: 1px;
+  font-weight: bolder;
+  cursor: pointer;
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.27);
+}
+
+.header > #login-button {
+  background: rgba(0, 180, 159, 0.44);
+}
+
+.header > #new-account-button {
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+}
+
 .header > * {
   display: inline-block;
 }
 
-.header > .title {
+.header > input {
+  width: 130px;
+  font-size: 12px;
+  background: transparent;
+  outline: none;
+  border: none;
+  background: rgba(0, 0, 0, 0.44);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.27);
+  color: #ccc;
+  padding-top: 3px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.movies-wrapper .header > * {
+  margin-left: 15px;
+  font-size: 11px;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.44);
+  color: rgba(255, 255, 255, 0.64);
+  padding: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  /* border: 1px solid rgba(216, 181, 42, 0.41); */
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.27);
+  border-radius: 1px;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.movies-wrapper .header > .title {
   color: #ffffff;
   font-size: 33px;
 }
 
-.header .menu-item {
+.movies-wrapper .header .menu-item {
   padding: 5px;
   font-size: 14px;
   padding-left: 15px;
@@ -293,7 +356,7 @@ table.main-wrapper > tbody {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  background: rgba(37, 37, 37, 0.9) url(../../../movies/assets/images/bg-noise-pattern.png);
+  background: rgba(26, 30, 36, 0.9) url(../../../movies/assets/images/bg-noise-pattern.png);
   z-index: 1000;
 }
 
@@ -357,38 +420,43 @@ table.main-wrapper > tbody {
 
 #quick-movie-description {
 	position: fixed;
-	height: 100%;
-	width: 315px;
-	background: rgba(0, 0, 0, 0.85) url(../../../movies/assets/images/bg-noise-pattern.png);
-	box-shadow: -1px 0 10px rgba(0, 0, 0, 0.69);
-	top: 0;
-	overflow-y: auto;
-	right: 0;
-	padding-left: 32px;
-	padding-right: 18px;
+  height: 100%;
+  width: 304px;
+  background: rgba(24, 24, 24, 0.96) url(../../../movies/assets/images/bg-noise-pattern.png);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.27);
+  border-left: 1px solid rgba(148, 148, 148, 0.06);
+  top: 0;
+  overflow-y: auto;
+  right: 0;
+  padding-left: 18px;
+  padding-right: 18px;
+  text-align: center;
 }
 
 #quick-movie-description h3 {
   color: #ddd;
-  margin-top: 40px;
+  margin-top: 60px;
   margin-bottom: 20px;
 }
 
 #quick-movie-description h4 {
   color: #bbb;
   margin-top: 30px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 #quick-movie-description p {
   color: #ddd;
-  font-style: italic;
-  text-indent: 10px;
-  font-size: 14px;
+  text-indent: 15px;
+  font-size: 13px;
   line-height: 18px;
+  text-align: justify;
 }
 
-#quick-movie-description .movie {
+#quick-movie-description .similar-movies .movie {
   max-width: 120px;
 }
 
@@ -406,10 +474,10 @@ table.main-wrapper > tbody {
 #quick-movie-description .close-button-bootstrap {
   position: absolute;
   top: 26px;
-  color: #EBC812;
+  color: #ECE76C;
   right: 9px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .tooltips span.tooltip {
@@ -428,7 +496,43 @@ table.main-wrapper > tbody {
 	margin-top: -28px;
 	margin-left: 43px;
 }
-.tooltips span.tooltip:after {
+.tooltips span.tooltip.hidden {
+  display: none;
+}
+.tooltips span.tooltip.expanded {
+  width: 340px;
+  height: 85%;
+  margin-top: -135px;
+}
+.tooltips span.tooltip.expanded.suggestions {
+  margin-top: -189px;
+}
+.tooltips span.tooltip.expanded:before {
+  margin-left: -178px;
+  margin-top: 112px;
+}
+.tooltips span.tooltip.expanded.suggestions:before {
+  margin-top: 163px;
+}
+.tooltips span.tooltip.expanded > .tooltip-content-wrapper {
+  width: 100%;
+  height: 100%;
+}
+.tooltips span.tooltip.expanded > .tooltip-content-wrapper:before {
+  content: '';
+  position: fixed;
+  margin-top: 113px;
+  margin-left: -175px;
+  width: 0;
+  height: 0;
+  border-right: 10px solid #000000;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+.tooltips span.tooltip.expanded.suggestions > .tooltip-content-wrapper:before {
+  margin-top: 164px;
+}
+.tooltips span.tooltip:not(.expanded):after {
 	content: '';
 	position: fixed;
 	margin-top: -38px;
@@ -461,12 +565,94 @@ table.main-wrapper > tbody {
 	text-shadow: 0px 1px 1px rgba(109, 109, 109, 0.71);
 	letter-spacing: 0.1px;
 }
-.tooltips:hover span.tooltip:hover {
+.tooltips:hover span.tooltip:not(.expanded):hover {
 	background: #111111;
 }
 .tooltips:hover span.tooltip:hover:after {
 	border-right: 10px solid #111111;
 }
 
+div.movie-options {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+}
 
+div.movie-options > * {
+  height: 37px;
+  margin: 3px;
+  margin-top: 0;
+  /* background-color: rgba(0, 0, 0, 0.3); */
+  position: relative;
+  z-index: 20;
+  /* box-shadow: 0 -3px 25px 3px #090707, inset 0 0 61px rgba(0, 0, 0, 1); */
+  padding: 15px;
+  font-size: 13px;
+  box-shadow: inset 0px -24px 18px -9px rgba(0, 0, 0, 0.91);
+}
 
+div.movie-options .glyphicon-star.checked {
+  color: #FCF5A4;
+}
+
+div.movie-options .glyphicon-star {
+  color: rgba(255, 255, 255, 0.19);
+} 
+
+#register-wrapper {
+  position: absolute;
+  overflow: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000000;
+  display: flex;
+}
+
+#register-form {
+  width: 350px;
+  vertical-align: middle;
+  background: #000;
+  margin: auto;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0px 1px 6px #000000;
+  background-color: rgba(26, 33, 36,0.96);
+  padding: 60px;
+  border-radius: 2px;
+}
+
+#register-form > * {
+  margin-bottom: 8px;
+}
+
+#register-form input {
+  font-size: 12px;
+  background: transparent;
+  outline: none;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.64);
+  color: #bbb;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#register-form .register-button {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.64);
+  padding: 15px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  /* border: 1px solid rgba(216, 181, 42, 0.41); */
+  border-radius: 1px;
+  font-weight: bolder;
+  cursor: pointer;
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.27);
+  background: rgba(0, 180, 159, 0.44);
+  display: inline-block;
+  margin-top: 10px;
+}
