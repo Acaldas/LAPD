@@ -31,7 +31,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     }
 
     //synchronize ratings
-    $scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
+    //$scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
 
     //get recomendation
     $scope.getRecomendation = function(user) {
@@ -49,6 +49,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
           $scope.user = {user: name, password: password};
           $scope.logged = true;
           $scope.getRecomendation(name);
+          $scope.getUserWatchedList(name);
         }
       });
     }
@@ -58,7 +59,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
       $scope.logged = false;
     }
 
-    //$scope.login("Teste1", "teste");
+    $scope.login("Teste1", "teste");
 
     $scope.addUser = function(name, password) {
       Users.addUser.query({},{name: name, password: password}, function (response) {
@@ -75,6 +76,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
   $scope.quickMovie = null;
   $scope.showQuickMovie = false;
   $scope.logged = false;
+  $scope.genreFiltered = false;
 
   //set quick description movie
   $scope.setQuickMovie = function(movie){ 
@@ -85,7 +87,13 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     });             
   };
   $scope.hideQuickMovie = function() {
-     $scope.showQuickMovie = false;
+    $scope.showQuickMovie = false;
+  };
+
+  $scope.showGenre = function(genre) {
+    $scope.genreFiltered = true;
+    $scope.genre = genre.name;
+    $scope.genreMovies = genre.movie;
   };
 
 
@@ -102,6 +110,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
   //get top movies by genre
   Movies.getSpecialList.get({},{'type': 3}, function (response){
       $scope.bestGenreMovies = response.genres;
+      console.log($scope.bestGenreMovies);
     });
 
     $scope.filterTypes = [

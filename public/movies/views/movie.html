@@ -26,12 +26,9 @@
         </div>
       </td>
       <td class="middle-wrapper">
-      <div class="error">
-        <p style="margin-left:100px">{{error}}</p>
-      </div>
         <div class="movies-wrapper" style="text-align:left" ng-hide="error">
-          <div class="row">
-            <div class="col-md-9" style="padding-left: 60px;">
+          <div class="row" style="height: 100%; overflow: auto;">
+            <div class="col-md-9" style="padding-left: 60px; padding-top: 30px; height: 100%; overflow: auto;">
              
               <h2 style="margin-bottom: 20px; color: #ccc; display:inline">{{movie.title}} <h4 style="color: #ccc; display:inline">{{movie.year}}</h4></h2>
 
@@ -117,8 +114,11 @@
                 
               </div>
             </div>
-            <div class="col-md-3" ng-show="similar_movies">
-              <h5 style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 20px; ">Similar movies</h5>
+            <div class="col-md-3" ng-show="similar_movies" style="height: 100%; overflow: auto;">
+              <h5 style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 20px; font-size: 13px;
+text-transform: uppercase;
+font-weight: bold;
+margin-top: 45px;">Similar movies</h5>
               <div ng-repeat="similar_movie in similar_movies" class="movie"  ng-click="setMovie(similar_movie)" style="max-width: 120px;
                         display: block;
                         text-align: center;
