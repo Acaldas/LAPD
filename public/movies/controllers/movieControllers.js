@@ -148,6 +148,9 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     $scope.error = response.error;
     $scope.movie = response;                          
     $scope.similar_movies = response.similar_movies.similar_movie;
+    $scope.genres = response.genres.genre;
+    $scope.cast = response.cast.actor;
+    $scope.directors = response.directors.director;
 
     $scope.setMovie = function(movie){
            $location.path('/movies/' + movie.id); 

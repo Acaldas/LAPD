@@ -33,7 +33,7 @@
           <div class="row">
             <div class="col-md-8" style="padding-left: 50px;">
              
-              <h2 style="margin-bottom: 20px; color: #ccc;">{{movie.title}}</h2>
+              <h2 style="margin-bottom: 20px; color: #ccc; display:inline">{{movie.title}} <h4 style="color: #ccc; display:inline">{{movie.year}}</h4></h2>
 
               <div class="row">
                 <div class="col-md-4">
@@ -54,6 +54,53 @@
                             color: #ddd;
                             text-indent: 10px;">{{movie.synopsis}}</p>
                 </div>
+                
+            <div class="col-md-8" ng-show="genres">
+              
+              <h5 style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 10px; ">Genres</h5>
+              <div ng-repeat="genre in genres" class="movie" style="max-width: 120px; display: block; text-align: center; margin: auto;">
+              	
+                <p class="genre" style="margin-top: 2px;">{{genre}}</p>
+              </div>
+              
+              <div ng-if="genres[0].length == 1" class="movie" style="max-width: 120px; display: block; text-align: center; margin: auto; margin-top: 2px;">{{genres}}</div>
+              
+              
+              
+              
+              
+              
+            </div>
+            
+            <div class="col-md-8" ng-show="cast">
+              <h5 style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 10px; ">Cast</h5>
+              <div ng-repeat="actor in cast" class="movie" style="max-width: 600px; display: block; text-align: center; margin: auto;">
+                  <div ng-repeat="character in actor.characters" class="cast" style="margin-top: 2px;">
+	                  <p ng-if="character[0].length == 1">{{actor.name}} ... {{character}}</p>
+	                  <p ng-if="character[0].length > 1">{{actor.name}} ... {{character[0]}}, {{character[1]}}</p>
+                  </div>
+              </div>
+            </div>
+            
+             <div class="col-md-8" ng-show="directors">
+              <h5 style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 10px; ">Directors</h5>
+              <div ng-repeat="director in directors" class="movie" style="max-width: 600px; display: block; text-align: center; margin: auto;">
+                  <p ng-if="director.name" class="directors" style="margin-top: 2px;">{{director.name}}</p>
+                  
+                  <p ng-if="!director.name" class="directors" style="margin-top: 2px;">{{director}}</p>
+                  
+              </div>
+              
+              <div class="score">{{movie.ratings.critics_score}}/100</div>
+              
+              <a href="http://www.imdb.com/title/tt{{movie.imdb}}">imdb</a>
+              
+              <a href="{{movie.links.alternate}}">rotten</a>
+              
+            </div>
+            
+
+                
               </div>
             </div>
             <div class="col-md-4" ng-show="similar_movies">
@@ -68,6 +115,8 @@
                 </div>
               </div>
             </div>
+            
+            
           </div>
         </div>
       </td>
