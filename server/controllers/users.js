@@ -27,12 +27,17 @@ exports.addUser = function(req, res) {
 		}
 
 		request.post(query, function (error, response, body) {	
-
-			res.send("done");		
+			xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+						 if (err) { 
+						    console.log(err);
+						  } else {
+						    res.send(result);
+						  }	
+			});				
 		}).auth(existUsername, existPassword, true);
 
 	} else
-		res.send("Invalid User");
+		res.send({status: "Invalid User"});
 
 	
 }

@@ -19,18 +19,20 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
          $location.path('/movies/' + movie.id); 
     };
 
-
+    $scope.getRating = function(movie) {
+    return new Array(movie.grade);   
+    }
     //get user watched list
     $scope.getUserWatchedList = function(user) {
        Movies.getUserRatings.get({},{'user': user}, function (response){
-          $scope.watched_list = response;
+          $scope.watched_list = response.ratings;
        });
     }
 
     //returns movie ratings returned from Trakt
     $scope.synchronizeTrakt = function(user, traktUser, traktPassword) {
       Movies.synchronizeTrakt.query({},{user: user, traktUser: traktUser, traktPassword: traktPassword}, function (response){ 
-        console.log(response);
+        $scope.getUserWatchedList(user);
       });
     }
 
@@ -64,9 +66,16 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
       AuthService.logout();
     }
 
-    $scope.addUser = function(name, password) {
+    $scope.addUser = function(name, password, traktusername, traktpassword) {
       Users.addUser.query({},{name: name, password: password}, function (response) {
-        console.log(response);
+        console.log(response.status);
+        if(response.status === "Success") {
+          $scope.login(name,password);
+          $scope.registerError = null;
+          if(traktusername!=null && traktpassword != null)
+              $scope.synchronizeTrakt(name,traktusername, traktpassword);
+        } else
+          $scope.registerError = response.status;
       }); 
     }
         
@@ -78,6 +87,8 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
   
   $scope.quickMovie = null;
   $scope.showQuickMovie = false;
+  $scope.genreFiltered = false;
+
 
   //set quick description movie
   $scope.setQuickMovie = function(movie){ 
@@ -88,7 +99,13 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     });             
   };
   $scope.hideQuickMovie = function() {
-     $scope.showQuickMovie = false;
+    $scope.showQuickMovie = false;
+  };
+
+  $scope.showGenre = function(genre) {
+    $scope.genreFiltered = true;
+    $scope.genre = genre.name;
+    $scope.genreMovies = genre.movie;
   };
 
 
@@ -105,6 +122,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
   //get top movies by genre
   Movies.getSpecialList.get({},{'type': 3}, function (response){
       $scope.bestGenreMovies = response.genres;
+      console.log($scope.bestGenreMovies);
     });
 
     $scope.filterTypes = [

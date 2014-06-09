@@ -1,13 +1,14 @@
 <section data-ng-controller="MoviesMainController">
   <div id="register-wrapper" style="display: none">
     <div id="register-form">
-      <h3>NEW ACCOUNT</h3>
+      <h3>NEW ACCOUNT</h3>      
       <input ng-model="registerusername" type="text" name="username" placeholder="Username" style="margin-bottom: 16px; margin-top: 10px;"/>
       <input ng-model="registerpassword"  type="password" name="password" placeholder="Password" style="width: 180px;margin-bottom: 20px"/>
       <h6><strong>Sync Trakt account (optional):</strong></h6>
-      <input type="text" name="traktemail" placeholder="Trakt username" style="width: 200px; margin-bottom: 12px;"/>
-      <input type="password" name="traktpass" placeholder="Trakt password" style="width: 180px;"/>
-      <p class="register-button" ng-click="addUser(registerusername, registerpassword)">REGISTER</p>
+      <input ng-model="traktusername" type="text" name="traktusername" placeholder="Trakt username" style="width: 200px; margin-bottom: 12px;"/>
+      <input ng-model="traktpassword" type="password" name="traktpassword" placeholder="Trakt password" style="width: 180px;"/>
+      <p class="register-button" ng-click="addUser(registerusername, registerpassword, traktusername, traktpassword)">REGISTER</p>
+      <div ng-show="registerError" style="color:red" >{{registerError}}</div>
     </div>
   </div>
   <script>
@@ -40,10 +41,9 @@
             <span class="tooltip watched hidden expanded">
               <div class="tooltip-content-wrapper">
                 <div class="sidebar-expanded-placeholder" ng-show="!logged">Login First!</div>
-                <div class="sidebar-movie-list">                
-                  <div ng-show="logged" ng-repeat="movie in watched_list.ratings" class="movie" ng-click="setMovie(movie)">
-                  <pre>{{movie.title|json}}</pre>
-                    <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
+                <div class="sidebar-movie-list">
+                  <div ng-show="logged" ng-repeat="movie in watched_list" class="movie" ng-click="setMovie(movie)">
+                    <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>                     
                   </div>
                 </div>
               </div>
@@ -60,7 +60,7 @@
               <div class="tooltip-content-wrapper">
                 <div class="sidebar-expanded-placeholder" ng-show="!logged">Login First!</div>
                 <div class="sidebar-movie-list">
-                  <div ng-show="logged" ng-repeat="movie in recomendation_movies" class="movie" ng-click="setMovie(movie)">
+                  <div ng-show="logged" ng-repeat="movie in recomendation_movies" class="movie" ng-click="setQuickMovie(movie)">
                     <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
                   </div>
                 </div>
@@ -73,25 +73,11 @@
       <td class="middle-wrapper">
         <div class="movies-wrapper">
           <div class="header">
-            <p>Action</p>
-            <p>Animation</p>
-            <p>Comedy</p>
-            <p>Crime</p>
-            <p>Documentary</p>
-            <p>Drama</p>
-            <p>History</p>
-            <p>Horror</p>
-            <p>Romance</p>
-            <p>Sports</p>
-            <p>Terror</p>
-            <p>Thriller</p>
-            <p>War</p>
-            <p>Western</p>
-            <p>Si-Fi</p>
+            <p ng-repeat="genre in bestGenreMovies.genre" ng-click="showGenre(genre)">{{genre.name}}</p>
           </div>
-          <div class="movie-group">
+          <div class="movie-group" ng-show="!genreFiltered">
             <h3>Best rated</h3>
-            <div ng-repeat="movie in bestRatedMovies" class="movie" ng-click="setQuickMovie(movie)">
+            <div ng-if="movie.poster" ng-repeat="movie in bestRatedMovies" class="movie" ng-click="setQuickMovie(movie)">
               <!--<h4>{{movie.title}}</h4>-->
               <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
               <div class="movie-options">
@@ -106,18 +92,29 @@
               </div>
             </div>
           </div>
-          <div class="movie-group">
-            <h3>Most viewed</h3>
-            <div ng-repeat="movie in mostRatedMovies" class="movie" ng-click="setQuickMovie(movie)">
+          <div class="movie-group" ng-show="!genreFiltered">
+            <h3>Most rated</h3>
+            <div ng-if="movie.poster" ng-repeat="movie in mostRatedMovies" class="movie" ng-click="setQuickMovie(movie)">
               <!--<h4>{{movie.title}}</h4>-->
               <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
             </div>
           </div>
-          <div class="movie-group">
-            <h3>Most rated</h3>
-            <div ng-repeat="movie in mostRatedMovies" class="movie" ng-click="setQuickMovie(movie)">
+          <div class="movie-group" ng-show="genreFiltered">
+            <h3>{{genre}}</h3>
+
+            <div ng-if="movie.poster" ng-repeat="movie in genreMovies" class="movie" ng-click="setQuickMovie(movie)">
               <!--<h4>{{movie.title}}</h4>-->
               <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
+              <div class="movie-options">
+                <div class="rate-movie">
+                  <span class="glyphicon glyphicon-star checked"></span>
+                  <span class="glyphicon glyphicon-star checked"></span>
+                  <span class="glyphicon glyphicon-star checked"></span>
+                  <span class="glyphicon glyphicon-star"></span>
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <!-- <div class="options-buttons"></div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -213,18 +210,19 @@
           </div>
         </td>
         <td>
-          <div class="external"><br><br>
+          <div class="external" style="position:relative; bottom: 20px;"><br><br>
             <a href="http://www.imdb.com/title/tt{{quickMovie.imdb}}">
-            <img src="public/movies/assets/images/imdb-logo.png" width="40px"></img>
+            <img src="public/movies/assets/images/imdb-logo.png" width="25px"></img>
           </a>
             <a href="{{quickMovie.links.alternate}}">
-              <img src="public/movies/assets/images/rotten-logo.png" width="75px"></img>
+              <img src="public/movies/assets/images/rotten-logo.png" width="50px"></img>
             </a>
           </div>
         </td>
       </tr>
     </table>
-  
+    
+    <h4 ng-show="quick_similar_movies">Synopsis</h4>
     <p>
       {{quickMovie.synopsis}}
     </p>
