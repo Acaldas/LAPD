@@ -4,6 +4,7 @@ var existUsername = 'admin';
 var existPassword = 'qweasd';
 var request = require('request'); //https://github.com/mikeal/request
 var libxml = require("libxmljs");
+var xml2jsparser = require('xml2js'); 
 var fs = require('fs');
 
 exports.addUser = function(req, res) {
@@ -25,14 +26,37 @@ exports.addUser = function(req, res) {
 			body: user.toString()
 		}
 
-		request.post(query, function (error, response, body) {
-			console.log(body);
+		request.post(query, function (error, response, body) {	
+
+			res.send("done");		
 		}).auth(existUsername, existPassword, true);
 
 	} else
 		res.send("Invalid User");
-	console.log(req.body);
-	res.send(req.body);
+
+	
+}
+
+exports.login = function(req, res) {
+	var name = req.body.name;
+	var password = req.body.password;
+	if(name != null && password != null) {
+
+		var url= 'http://localhost:8080/exist/rest/db/apps/movies/login.xq';
+
+		request.post(url, {form: {user: name, password: password}},function (error, response, body) {
+
+			xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+						 if (err) { 
+						    console.log(err);
+						  } else {
+						    res.send(result);
+						  }	
+			});		
+		}).auth(existUsername, existPassword, true);
+
+	} else
+		res.send({status: "Invalid User"});
 }
 
 exports.addRating = function (req, res) {

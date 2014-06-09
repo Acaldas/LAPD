@@ -151,10 +151,11 @@
         <div class="close-button-wrapper">
           <div class="close-button" onclick="$('#search-wrapper').hide()"></div>
         </div>
+        <select id="filterSearch" ng-model="selectedFilterType" ng-options="filterType as filterType.name for filterType in filterTypes"></select>
         <input id="searchText" type="search" class="search" ng-model="searchText" name="Movie" placeholder="What is it?" />
       </div>
       <div class="search-results">
-        <div class="movies" infinite-scroll="getMoreMovies()" infinite-scroll-distance="3">
+        <div class="movies">
           <div ng-repeat="movie in movies" class="movie" ng-click="setMovie(movie)">
             <!--<h4>{{movie.title}}</h4>-->
             <div class="poster" style="background-image: url({{movie.poster}});" alt="{{movie.title}}"></div>
