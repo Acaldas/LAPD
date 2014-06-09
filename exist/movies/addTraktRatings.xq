@@ -23,6 +23,7 @@ return (
                     {$trakt-rating/date}
                     {$trakt-rating/grade}
                   </rating>
+    where $movies//movie[imdb = $trakt-rating/imdb]/id/text()                 
        return (
            update delete $newUser//rating[movie=$movies//movie[imdb = $trakt-rating/imdb]/id/text()],
            update insert $newRating into $newUser/ratings 

@@ -18,7 +18,8 @@ return <user>
              return <rating>
                         {$rating/grade}
                         {$movie/imdb}
-                        {$movie/title} 
+                        {$movie/title}
+                        {$movie/poster}
                         {$movie/year}
                         {$movie/id}
                     </rating>

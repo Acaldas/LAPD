@@ -7,9 +7,9 @@ let $username := $user//name/text()
 let $password := $user//password/text()
 
 return if(empty($username) or empty($password)) then
-    '{error: "Invalid user"}'
+    <status>Invalid user</status>
 else
     if(exists($users//name[text()=$user//name/text()])) then
-        '{error: "User already exists"}'
+        <status>User already exists</status>
     else
-       update insert $user into $users/users
+       (update insert $user into $users/users,<status>Success</status>)
