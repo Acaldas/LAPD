@@ -62,6 +62,14 @@ table.main-wrapper > tbody {
   margin-left: 45px;
 }
 
+.movies-wrapper > div .row {
+	margin-top: 10px;
+}
+
+.movies-wrapper > div > div > .row > div:first-child {
+	width: 178px;
+}
+
 .movies-wrapper .movie-group-wrapper {
   /*margin-top: 40px;*/
    text-align: left; 
