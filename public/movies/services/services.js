@@ -33,4 +33,12 @@ angular.module('mean.movies').factory('Movies', ['$resource', '$location',
         query: { method: 'POST', params: {user: '@user', password: '@password'}, isArray: false }
       })
     };
-}]);
+}]).factory('AuthService', function() {
+  var currentUser;
+  return {
+    login: function(user) { currentUser = user; },
+    logout: function() { currentUser = null; },
+    isLoggedIn: function() { return currentUser != null; },
+    currentUser: function() { return currentUser; }
+  };
+});

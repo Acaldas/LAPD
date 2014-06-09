@@ -1,12 +1,19 @@
 'use strict';
  
 angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$stateParams', '$location', '$timeout', '$http', 'Global','Movies', 'Users',
-  function($scope, $stateParams, $location,  $timeout, $http, Global, Movies, Users) {
+ 'AuthService',
+  function($scope, $stateParams, $location,  $timeout, $http, Global, Movies, Users, AuthService) {
     $scope.global = Global;
     $scope.error = "";
     $scope.filterText = '';
 
-    $scope.user = "";
+    $scope.user = AuthService.currentUser();
+    $scope.logged = AuthService.isLoggedIn();
+
+    $scope.$watch( AuthService.isLoggedIn, function ( isLoggedIn ) {
+      $scope.logged = AuthService.isLoggedIn();
+      $scope.user = AuthService.currentUser();
+  });
 
     $scope.setMovie = function(movie){
          $location.path('/movies/' + movie.id); 
@@ -16,12 +23,9 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     //get user watched list
     $scope.getUserWatchedList = function(user) {
        Movies.getUserRatings.get({},{'user': user}, function (response){
-          $scope.watched_list = response.ratings;
-          console.log(response);
+          $scope.watched_list = response;
        });
     }
-
-    //$scope.getUserWatchedList("Teste1");
 
     //returns movie ratings returned from Trakt
     $scope.synchronizeTrakt = function(user, traktUser, traktPassword) {
@@ -31,7 +35,7 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     }
 
     //synchronize ratings
-    $scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
+    //$scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
 
     //get recomendation
     $scope.getRecomendation = function(user) {
@@ -43,12 +47,13 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
 
     $scope.login = function(name, password) {
       Users.login.query({},{name: name, password: password}, function (response) {
-        console.log(response);
         $scope.status = response.status;
         if($scope.status === "Success") {
-          $scope.user = {user: name, password: password};
+          AuthService.login({user: name, password: password});
+          $scope.user = AuthService.currentUser();
           $scope.logged = true;
           $scope.getRecomendation(name);
+          $scope.getUserWatchedList(name);
         }
       });
     }
@@ -56,9 +61,8 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     $scope.logout = function() {
       $scope.user = "";
       $scope.logged = false;
+      AuthService.logout();
     }
-
-    //$scope.login("Teste1", "teste");
 
     $scope.addUser = function(name, password) {
       Users.addUser.query({},{name: name, password: password}, function (response) {
@@ -74,7 +78,6 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
   
   $scope.quickMovie = null;
   $scope.showQuickMovie = false;
-  $scope.logged = false;
 
   //set quick description movie
   $scope.setQuickMovie = function(movie){ 
