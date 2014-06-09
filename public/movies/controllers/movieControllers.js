@@ -6,10 +6,22 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     $scope.error = "";
     $scope.filterText = '';
 
+    $scope.user = "";
+
     $scope.setMovie = function(movie){
          $location.path('/movies/' + movie.id); 
     };
 
+
+    //get user watched list
+    $scope.getUserWatchedList = function(user) {
+       Movies.getUserRatings.get({},{'user': user}, function (response){
+          $scope.watched_list = response.ratings;
+          console.log(response);
+       });
+    }
+
+    //$scope.getUserWatchedList("Teste1");
 
     //returns movie ratings returned from Trakt
     $scope.synchronizeTrakt = function(user, traktUser, traktPassword) {
@@ -21,15 +33,23 @@ angular.module('mean.movies').controller('MoviesMainController', ['$scope', '$st
     //synchronize ratings
     //$scope.synchronizeTrakt("Teste1", "Acaldas", "qweasd");
 
-
     //get recomendation
     $scope.getRecomendation = function(user) {
       Movies.getRecomendation.query({},{user: user}, function (response){ 
-        console.log(response);
+        $scope.recomendation_movies = response.movie;
       });
     }
 
-    //$scope.getRecomendation("Teste3");
+    //$scope.getRecomendation("Teste1");
+
+    $scope.login = function(name, password) {
+      Users.login.query({},{name: name, password: password}, function (response) {
+        console.log(response);
+        $scope.status = response.status;
+        if($scope.status === "Success")
+          $scope.user = {user: name, password: password};
+      });
+    }
 
     $scope.addUser = function(name, password) {
       Users.addUser.query({},{name: name, password: password}, function (response) {

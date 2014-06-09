@@ -281,6 +281,28 @@
 
 		}
 
+		exports.getUserRatings = function( req, res) {
+			var user = req.params.user;
+
+			var url = 'http://localhost:8080/exist/rest/db/apps/movies/getUserRatings.xq?user=' + user;
+
+			request.get(url, function (error, response, body) {
+				if(response.statusCode == 200){
+
+					xml2jsparser.parseString(body, {explicitArray: false}, function (err, result) {
+						 if (err) { 
+						    console.log(err);
+						  } else {
+						    res.send({ratings: result.user.rating});
+						  }
+					});																			
+					} else {
+						console.log('error: '+ response.statusCode);
+						console.log(body);
+					}
+			}).auth(existUsername, existPassword, true);
+		}
+
 		exports.synchronizeTrakt = function( req, res) {
 			var body = req.body;
 			var user = body.user;
